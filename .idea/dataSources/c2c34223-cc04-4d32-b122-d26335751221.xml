@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="app">
+  <database-model serializer="dbm" rdbms="SQLITE" format-version="4.9">
+    <root id="1">
+      <ServerVersion>3.20.1</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <collation id="3" parent="1" name="BINARY"/>
+    <collation id="4" parent="1" name="NOCASE"/>
+    <collation id="5" parent="1" name="RTRIM"/>
+    <table id="6" parent="2" name="alembic_version"/>
+    <table id="7" parent="2" name="roster"/>
+    <table id="8" parent="2" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <table id="9" parent="2" name="team"/>
+    <table id="10" parent="2" name="user"/>
+    <column id="11" parent="6" name="version_num">
+      <Position>1</Position>
+      <DataType>VARCHAR(32)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="12" parent="6" name="sqlite_autoindex_alembic_version_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>version_num</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="13" parent="6" name="alembic_version_pkc">
+      <ColNames>version_num</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_alembic_version_1</UnderlyingIndexName>
+    </key>
+    <column id="14" parent="7" name="user_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="15" parent="7" name="team_id">
+      <Position>2</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="16" parent="7" name="timestamp">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="17" parent="7" name="timestamp_end">
+      <Position>4</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <index id="18" parent="7" name="sqlite_autoindex_roster_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_id
+team_id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="19" parent="7">
+      <ColNames>user_id
+team_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_roster_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="20" parent="7">
+      <ColNames>user_id</ColNames>
+      <RefTableName>user</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="21" parent="7">
+      <ColNames>team_id</ColNames>
+      <RefTableName>team</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="22" parent="8" name="type">
+      <Position>1</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="23" parent="8" name="name">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="24" parent="8" name="tbl_name">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="25" parent="8" name="rootpage">
+      <Position>4</Position>
+      <DataType>integer|0s</DataType>
+    </column>
+    <column id="26" parent="8" name="sql">
+      <Position>5</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="27" parent="9" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="28" parent="9" name="name">
+      <Position>2</Position>
+      <DataType>VARCHAR(32)|0s</DataType>
+    </column>
+    <column id="29" parent="9" name="tag">
+      <Position>3</Position>
+      <DataType>VARCHAR(6)|0s</DataType>
+    </column>
+    <column id="30" parent="9" name="format">
+      <Position>4</Position>
+      <DataType>VARCHAR(16)|0s</DataType>
+    </column>
+    <column id="31" parent="9" name="description">
+      <Position>5</Position>
+      <DataType>VARCHAR(1024)|0s</DataType>
+    </column>
+    <column id="32" parent="9" name="password_hash">
+      <Position>6</Position>
+      <DataType>VARCHAR(128)|0s</DataType>
+    </column>
+    <index id="33" parent="9" name="ix_team_name">
+      <ColNames>name</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <index id="34" parent="9" name="ix_team_format">
+      <ColNames>format</ColNames>
+      <ColumnCollations></ColumnCollations>
+    </index>
+    <key id="35" parent="9">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="36" parent="10" name="id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="37" parent="10" name="steamid64">
+      <Position>2</Position>
+      <DataType>VARCHAR(18)|0s</DataType>
+    </column>
+    <column id="38" parent="10" name="username">
+      <Position>3</Position>
+      <DataType>VARCHAR(32)|0s</DataType>
+    </column>
+    <column id="39" parent="10" name="avatar_url">
+      <Position>4</Position>
+      <DataType>VARCHAR(140)|0s</DataType>
+    </column>
+    <column id="40" parent="10" name="avatar_url_thumb">
+      <Position>5</Position>
+      <DataType>VARCHAR(140)|0s</DataType>
+    </column>
+    <column id="41" parent="10" name="displayName">
+      <Position>6</Position>
+      <DataType>VARCHAR(32)|0s</DataType>
+    </column>
+    <column id="42" parent="10" name="email">
+      <Position>7</Position>
+      <DataType>VARCHAR(120)|0s</DataType>
+    </column>
+    <column id="43" parent="10" name="password_hash">
+      <Position>8</Position>
+      <DataType>VARCHAR(128)|0s</DataType>
+    </column>
+    <column id="44" parent="10" name="steamdata_ttl">
+      <Position>9</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <index id="45" parent="10" name="ix_user_steamid64">
+      <ColNames>steamid64</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <index id="46" parent="10" name="ix_user_username">
+      <ColNames>username</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <index id="47" parent="10" name="ix_user_email">
+      <ColNames>email</ColNames>
+      <ColumnCollations></ColumnCollations>
+    </index>
+    <key id="48" parent="10">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

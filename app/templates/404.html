@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% if current_user.is_authenticated %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% endif %}
+    <h1>404: YOUR EXISTENCE IS MEANINGLESS</h1>
+    <div style="padding-top: 10rem"/>
+    <img src="/resource/broog_beach_a.png" align="center" style="display:block;margin:auto;width:50%"/>
+{% endblock %}

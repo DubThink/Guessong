@@ -1,0 +1,50 @@
+body {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+    background-color: #222224;
+    color: lightgrey;
+}
+a:link {
+    color:lightblue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: lightcyan;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: mediumpurple;
+    text-decoration: none;
+}
+
+a:active {
+    color: lightcoral;
+    text-decoration: underline;
+}
+
+input {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+    padding:3px;
+    border-radius: 6px;
+    border-style: none;
+}
+
+table {
+    text-align: left;
+    background-color: #333333;
+}
+td{
+    padding: 5px;
+}
+tr:nth-child(even) {
+    background-color: #444444
+}
+
+.roundbox{
+    background-color: #333333;
+}
+.navbar{
+    padding: 10px;
+    background-color: #333333;
+}
