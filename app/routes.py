@@ -2,8 +2,10 @@ from time import time
 
 import json
 from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request
+from flask_socketio import SocketIO, emit
 from flask_login import login_user, logout_user, current_user, login_required
-from app import app, db
+from app import app, db, socketio
+from app.spotifyapi import testspotifyapi
 import os
 from app.models import User
 from werkzeug.urls import url_parse
@@ -25,3 +27,19 @@ def serve_file(path):
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html')
+
+@app.route('/testspotify/<s>')
+def testspotify(s):
+    return testspotifyapi(s)
+
+@app.route('/testbackend')
+def testbackend():
+    return render_template('testbackend.html', async_mode=socketio.async_mode)
+
+
+@socketio.on('event')
+def test_event(message):
+    global count
+    count += 1
+    print(message['data'])
+    emit('response', {'data': str(count) + ':' + message['data']})
