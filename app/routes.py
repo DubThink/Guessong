@@ -1,8 +1,9 @@
 from time import time
 
+from app.backend import * 
 import json
 from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio
 from app.spotifyapi import testspotifyapi
@@ -13,6 +14,7 @@ import requests
 import time
 ADMIN_ID = 1
 
+socket = SocketIO(app)
 
 @app.route('/')
 @app.route('/index')
@@ -36,10 +38,18 @@ def testspotify(s):
 def testbackend():
     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
+#Expects message to contain name : the user's name
+@socket.on('create_lobby')
+def create_lobby(message):
+   room = createLobby() 
+   joinLobby(room, message['name']) 
+   join_room(room)
+   print(message['name'])
 
-@socketio.on('event')
-def test_event(message):
-    global count
-    count += 1
-    print(message['data'])
-    emit('response', {'data': str(count) + ':' + message['data']})
+#Expects message to contain name and room
+@socket.on('join_lobby')
+def join_lobby(message):
+    joinLobby(message['room'], message['name'])
+    print('joined ' + message['room'])
+    emit('reply', message['name'] + 'has joined the room', broadcast=True)
+

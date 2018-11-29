@@ -41,3 +41,8 @@ nosetests.xml
 venv
 app.db
 microblog.log*
+
+#vim swap
+*.swp
+
+.DS_Store
