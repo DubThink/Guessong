@@ -5,3 +5,6 @@ import requests
 import json
 from app.models import User
 
+class GameLobby(FlaskForm):
+    playlist = StringField('Playlist', validators=[DataRequired()])
+    start = SubmitField('Start Game')

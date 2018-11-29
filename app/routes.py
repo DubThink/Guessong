@@ -38,6 +38,10 @@ def testspotify(s):
 def testbackend():
     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
+@app.route('/game')
+def game():
+    return render_template('gamepage.html', async_mode=socketio.async_mode)
+
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
 def create_lobby(message):
