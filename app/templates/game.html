@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block app_content %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            namespace = '/';
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+            socket.on('connect', function() {
+                socket.emit('event', {data: 'Yoo hoo!'});
+                console.log("yes");
+            });
+            socket.on('reply', function(msg) {
+               $("#output").text( msg["data"] );
+                console.log(msg);
+            });
+            $('button#join').click(function(event) {
+                socket.emit('join_lobby', {name: $('#name').val(), room: $('#room_code').val()});
+                console.log("JOINED");
+               return false;
+            });
+            $('button#create_lobby').click(function(event) {
+                socket.emit('create_lobby', {name: $('#name').val()});
+                console.log('clicked');
+                return false;
+            });
+        });
+    </script>
+    <div id='chat_output'>
+        Chat:
+    </div>
+    <form id="chat" action='#'>
+        <input type='text' id='chat_input'>
+    </form>        
+    <button id="chat_submit">Chat</button>
+
+    <form id="create_game">
+        <input type='text' id='' >
+        <button type='button' id='start'>Start Game</button>
+    </form>
+{% endblock %}
