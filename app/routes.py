@@ -40,7 +40,7 @@ def testbackend():
 
 @app.route('/game')
 def game():
-    return render_template('gamelobby.html', async_mode=socketio.async_mode)
+    return render_template('game.html', async_mode=socketio.async_mode)
 
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
