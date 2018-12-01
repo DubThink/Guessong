@@ -36,7 +36,22 @@
     <button id="chat_submit">Chat</button>
 
     <form id="create_game">
-        <input type='text' id='' >
+        <label for="room_name">Room Name:</label>
+        <input type='text' id='room_name'>
+        <input type='radio' name='room_type' value='public'>
+        <label for="public">Public</label>
+        <input type='radio' name='room_type' value='private'>
+        <label for="private">Private</label>
+        <input type='range' min='10' max='30' class='slider'>
         <button type='button' id='start'>Start Game</button>
+        <label for="playlist">Playlist:</label>
+        <input type='text' id='playlist'>
     </form>
+
+    <form id="create_game">
+        <label for="guess_box">Guess:</label>
+        <input type='text' id='guess_box'>
+        <button type='button' id='guess_button'>Guess Song</button>
+    </form>
+
 {% endblock %}
