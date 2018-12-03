@@ -24,6 +24,7 @@
             $('button#create_lobby').click(function(event) {
                 socket.emit('create_lobby', {name: $('#name').val()});
                 console.log('clicked');
+                location.replace("game");
                 return false;
             });
         });
