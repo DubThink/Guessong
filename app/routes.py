@@ -57,3 +57,10 @@ def join_lobby(message):
     print('joined ' + message['room'])
     emit('reply', message['name'] + 'has joined the room', broadcast=True)
 
+@socket.on('chat_message')
+def chat_message(message):
+   emit( 'chat_message', message, broadcast=True); 
+
+@socket.on('start_game')
+def start_game(message):
+    print(message)
