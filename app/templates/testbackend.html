@@ -6,6 +6,57 @@
 
     <script type='text/javascript'>
         $(document).ready(function() {
+            console.log("in testbackend.html");
+            namespace = '/';
+            username = 'default_name';
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+            var name = document.forms["startup"]["name"].value;
+            socket.on('connect', function() {
+                socket.emit('event', {data: 'Yoo hoo!'});
+                console.log("yes");
+            });
+            socket.on('reply', function(msg) {
+               $("#output").text( msg["data"] );
+               console.log(msg);
+            });
+            socket.on('chat_message', function(msg) {
+                $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
+            });
+            $('#join').click(function(event) {
+                socket.emit('join_lobby', {name: $('#name').val(), room: $('#room_code').val()});
+                if(name == ""){
+                    document.getElementById("name_validation").innerHTML = "please enter a name!";
+                }
+                return false;
+            });
+            $('#create_lobby').click(function(event) {
+                socket.emit('create_lobby', {name: $('#name').val()});
+                if(name == ""){
+                    document.getElementById("name_validation").innerHTML = "please enter a name!";
+                }
+                else {
+                    location.replace("game");
+                }
+                return false;
+            });
+            $('#chat_submit').click(function(event) {
+                socket.emit('chat_message', {username: username, message: $('#chat_input').val()});
+                return false;
+            });
+            $('#start').click(function(event) {
+                socket.emit('start_game', {
+                    username: username,
+                    room_name: $('#room_name').val(),
+                    playlist: $('#playlist').val(),
+                    room_type: $("input[name='room_type']:checked").val(),
+                    song_length: $('#song_length').val()
+                });
+            });
+            $('button#guess_button').click(function(event) {
+                socket.emit('song_guess', {username: username, guess: $('#guess_box').val() });
+            });
+
+            /*
             namespace = '/';
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
             socket.on('connect', function() {
@@ -27,16 +78,22 @@
                 location.replace("game");
                 return false;
             });
+            */
         });
     </script>
+    </head>
+
 
     <body>
-    <form id="emit" method="POST" action='#'>
-        <input type="text" name="room_code" id="room_code" placeholder="Room Code">
-        <input type="text" name="name" id="name" placeholder="Name">
+    <form name="startup" id="emit" method="POST" action='#'>
+        <input type="text" name="room_code" id="room_code" placeholder="Room Code" >
+        <p id = 'room_code_validation'></p>
+        <button id="join">Join</button>
+        </br>
+        <input type="text" name="name" id="name" placeholder="Name" required>
+        <p id = 'name_validation'></p>
+        <button id="create_lobby">Create Lobby</button>
     </form>
-    <button id="join">Join</button>
-    <button id="create_lobby">Create Lobby</button>
     <p id='output'></p>
     </body>
 </html>
