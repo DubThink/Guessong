@@ -1,7 +1,8 @@
-from app import spotifyapi
+from app import itunesapi as musicapi
 from difflib import SequenceMatcher
 import threading
 import time
+import random
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
@@ -28,11 +29,13 @@ class Game:
     unplayedSongs = []
     playedSongs = []
     currentSong={ 'name' : 'September',
-                 'artist' : 'Earth wind and fire' }
+                 'artist' : 'Earth wind and fire',
+                  'thumbnail' : ''}
     gameUsers = {}
     roomID = "tacocode"
     gameStarted = False
     playlistData = None
+    max_songs=4
 
     # game state data
     startTime=0
@@ -57,6 +60,7 @@ class Game:
         return True
     
     def endGame(self):
+        self.state=GAME_END
         return True
 
     def checkGuess(self, username, guess):
@@ -85,9 +89,9 @@ class Game:
         except KeyError as e:
             return None
 
-    def setPlaylist(self, spotifyURI):
-        self.playlistID = spotifyURI
-        self.playlistData = spotifyapi.getPlaylist(spotifyURI)
+    def setPlaylist(self, playlist_id):
+        self.playlistID = playlist_id
+
         return True
 
     def getPlayersData(self):
@@ -97,12 +101,21 @@ class Game:
         self.state=ROUND_LIVE
         self.startTime = time.time()
 
-        # TODO next song
+        if len(self.unplayedSongs)==0:
+            self.unplayedSongs=musicapi.getPlaylist(self.playlistID)
+            random.shuffle(self.unplayedSongs)
+        if self.currentSong:
+            self.playedSongs.append(self.currentSong)
+        self.currentSong=self.unplayedSongs.pop()
+
+
 
     def finishRound(self):
         self.state=ROUND_END
+        if len(self.playedSongs)>=self.max_songs:
+            return True
         self.startTime = time.time()
-
+        return False
 
 class GameManager:
     roomToGame = {}
@@ -148,7 +161,9 @@ class GameManager:
         print('ticking...')
         for roomcode, game in self.roomToGame.items():
             if game.state is ROUND_LIVE and time.time()-game.startTime>30:
-                game.finishRound()
+                killgame=game.finishRound()
+                if(killgame):
+                    self.endGame(game.roomID)
                 if self.updateClients:
                     self.updateClients(roomcode, game)
             elif game.state is ROUND_END and time.time()-game.startTime>15:
