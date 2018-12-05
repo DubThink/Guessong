@@ -39,14 +39,13 @@ def testbackend():
     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
 @app.route('/game/<create>/<name>/<room>', methods=["GET", "POST"])
-def game(create, name, room = ""):
-    print(create + ", " + name + ", " + room)
-    return render_template('game.html')
+def game(create, name, room):
+    return render_template('game.html', create=create, room=room, username=name)
 
 @app.route('/create_game', methods=["GET", "POST"])
 def creategame():
     if request.method == 'POST':
-        return redirect(url_for('game', create=True, name=request.form["name"]))
+        return redirect(url_for('game', create=True, name=request.form["name"], room="None"))
 
 @app.route('/join_game', methods=["GET", "POST"])
 def joingame():

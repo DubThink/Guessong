@@ -1,7 +1,11 @@
 import app
 
+codecount = 0
+
 def createLobby():
-    return app.gameManager.createGame().roomID
+    global codecount
+    codecount += 1
+    return app.gameManager.createGame(codecount).roomID
 
 def joinLobby(room, username):
     app.gameManager.getGame(room).addUser(username)

@@ -1,10 +1,9 @@
 $(document).ready(function() {
     namespace = '/';
-    username = 'default_name';
+    console.log(getUrlVars()["username"]);
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     socket.on('connect', function() {
         socket.emit('event', {data: 'Yoo hoo!'});
-        console.log("yes");
     });
     socket.on('reply', function(msg) {
        $("#output").text( msg["data"] );
@@ -14,7 +13,7 @@ $(document).ready(function() {
         $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
     });
     $('button#join').click(function(event) {
-        socket.emit('join_lobby', {name: $('#name').val(), room: $('#room_code').val()});
+        socket.emit('join_lobby', {name: $('#name').val(), room: $('#room_name').val()});
         return false;
     });
     $('button#create_lobby').click(function(event) {
@@ -38,3 +37,11 @@ $(document).ready(function() {
         socket.emit('song_guess', {username: username, guess: $('#guess_box').val() });
     });
 });
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
