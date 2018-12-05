@@ -11,7 +11,7 @@ class PlaylistScore(db.Model):
     timestamp = db.Column(db.Integer)
     score = db.Column(db.Integer)
 
-    user=db.relationship("User",back_populates="scores")
+    user = db.relationship("User",back_populates="scores")
     playlist=db.relationship("Playlist",back_populates="socres")
 
     def __repr__(self):
