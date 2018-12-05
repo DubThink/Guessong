@@ -2,22 +2,34 @@
     <head>
     <title>Socket Demo</title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../resource/egbert.css">
 
-    <script type='text/javascript'>
 
-    </script>
     </head>
 
 
-    <body>
-
-    <form id="emit" method="POST" action='/game'>
+    <p id="join_p">
+    <h3> Join a Game </h3>
+    <form id="joining_game" method="POST" action='/game'>
         <input type="text" name="room_code" id="room_code" placeholder="Room Code">
-        <input type="text" name="name" id="name" placeholder="Name">
-        <button id="join">Join</button>
-        <input type="submit" value="create_lobby" id="create_lobby">
+        <input type="text" name="name" id="joinGame_name" placeholder="Name">
+        <input type="submit" value="Join Game" id="join">
     </form>
+    </p>
+
+
+    <p id="create_p">
+    <h3> Create a Game </h3>
+    <form id="creating_game" method="POST" action='/game'>
+        <input type="text" name="name" id="createGame_name" placeholder="Name">
+        <input type="submit" value="Create Game" id="create_lobby">
+    </form>
+    </p>
+
 
     <p id='output'></p>
+
+
     </body>
 </html>
