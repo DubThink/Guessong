@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block app_content %}
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+
+    <script type='text/javascript' src='../resource/gamesockets.js'></script>
+    <div id='chat_output'>
+        Chat:
+    </div>
+    <form id="chat" action='#'>
+        <input type='text' id='chat_input'>
+    </form>        
+    <button id="chat_submit">Chat</button>
+
+    <form id="create_game">
+        <label for="room_name">Room Name:</label>
+        <input type='text' id='room_name'>
+        <input type='radio' name='room_type' value='public'>
+        <label for="public">Public</label>
+        <input type='radio' name='room_type' value='private'>
+        <label for="private">Private</label>
+        <input type='range' min='10' max='30' class='slider' id='song_length'>
+        <button type='button' id='start'>Start Game</button>
+        <label for="playlist">Playlist:</label>
+        <input type='text' id='playlist'>
+    </form>
+
+    <form id="create_game">
+        <label for="guess_box">Guess:</label>
+        <input type='text' id='guess_box'>
+        <button type='button' id='guess_button'>Guess Song</button>
+    </form>
+
+{% endblock %}

@@ -34,9 +34,24 @@ def not_found_error(error):
 def testspotify(s):
     return testspotifyapi(s)
 
-@app.route('/testbackend')
+@app.route('/testbackend', methods=["GET", "POST"])
 def testbackend():
     return render_template('testbackend.html', async_mode=socketio.async_mode)
+
+@app.route('/game/<create>/<name>/<room>', methods=["GET", "POST"])
+def game(create, name, room = ""):
+    print(create + ", " + name + ", " + room)
+    return render_template('game.html')
+
+@app.route('/create_game', methods=["GET", "POST"])
+def creategame():
+    if request.method == 'POST':
+        return redirect(url_for('game', create=True, name=request.form["name"]))
+
+@app.route('/join_game', methods=["GET", "POST"])
+def joingame():
+    if request.method == 'POST':
+        return redirect(url_for('game', create=False, name=request.form["name"], room=request.form["room_code"]))
 
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
@@ -53,3 +68,10 @@ def join_lobby(message):
     print('joined ' + message['room'])
     emit('reply', message['name'] + 'has joined the room', broadcast=True)
 
+@socket.on('chat_message')
+def chat_message(message):
+   emit( 'chat_message', message, broadcast=True); 
+
+@socket.on('start_game')
+def start_game(message):
+    print(message)
