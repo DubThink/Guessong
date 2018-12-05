@@ -34,13 +34,20 @@ def not_found_error(error):
 def testspotify(s):
     return testspotifyapi(s)
 
-@app.route('/testbackend')
+@app.route('/testbackend', methods=["GET", "POST"])
 def testbackend():
     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
-@app.route('/game')
+@app.route('/game', methods=["GET", "POST"])
 def game():
-    return render_template('game.html', async_mode=socketio.async_mode)
+    print("What?")
+    return render_template('404.html')
+
+    if request.method == 'POST':
+        print(request.form["data"])
+        return redirect(url_for('game'))
+    #return render_template('game.html', async_mode=socketio.async_mode)
+    return render_template('game.html')
 
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
