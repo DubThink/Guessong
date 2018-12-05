@@ -19,4 +19,4 @@ function clickCreate(){
     }
 }
 
-//TODO: update to make sure room code and names are valid
+//TODO: update to make sure is valid
