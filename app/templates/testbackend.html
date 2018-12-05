@@ -4,21 +4,13 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
 
     <script type='text/javascript'>
-        $(document).ready(function() {
-            $('button#join').click(function(event) {
-                console.log("JOINED");
-               return false;
-            });
-            /*
-            $('button#create_lobby').click(function(event) {
-                console.log('clicked');
-                //$.post("/game", {data: "Some data"});
 
-            });*/
-        });
     </script>
+    </head>
+
 
     <body>
+
     <form id="emit" method="POST" action='/game'>
         <input type="text" name="room_code" id="room_code" placeholder="Room Code">
         <input type="text" name="name" id="name" placeholder="Name">
