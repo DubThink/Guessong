@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    console.log("in gamesockets.js");
     namespace = '/';
     console.log(getUrlVars()["username"]);
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);

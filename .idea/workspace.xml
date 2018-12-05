@@ -116,8 +116,28 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/resource/gamesockets.js">
               <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
                 <state relative-caret-position="135">
                   <caret line="9" column="24" lean-forward="true" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+=======
+                <state relative-caret-position="120">
+                  <caret line="8" column="99" selection-start-line="8" selection-start-column="99" selection-end-line="8" selection-end-column="99" />
+                  <folding>
+                    <element signature="e#0#26#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="itunesapi.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/itunesapi.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="153">
+                  <caret line="9" column="61" selection-start-line="9" selection-start-column="61" selection-end-line="9" selection-end-column="61" />
+                  <folding>
+                    <element signature="e#0#15#0" expanded="true" />
+                  </folding>
+>>>>>>> c8bbeca61b82d8581550d23eca939b5f7faffbaa
                 </state>
               </provider>
             </entry>
@@ -263,9 +283,18 @@
         <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/app/templates/spotifyapi.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/app/spotifyapi.py" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/config.py" />
+<<<<<<< HEAD
+=======
+        <option value="$PROJECT_DIR$/app/playlists1.json" />
+        <option value="$PROJECT_DIR$/app/spotifyapi.py" />
+        <option value="$PROJECT_DIR$/app/spotify_to_itunes_playlist_tool.py" />
+        <option value="$PROJECT_DIR$/spotify_to_itunes_playlist_tool.py" />
+        <option value="$PROJECT_DIR$/playlist1.json" />
+        <option value="$PROJECT_DIR$/app/itunesapi.py" />
+        <option value="$PROJECT_DIR$/app/game.py" />
+>>>>>>> c8bbeca61b82d8581550d23eca939b5f7faffbaa
         <option value="$PROJECT_DIR$/app/templates/testbackend.html" />
         <option value="$PROJECT_DIR$/app/game.py" />
         <option value="$PROJECT_DIR$/app/backend.py" />
@@ -283,15 +312,17 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="30" />
-    <option name="width" value="1940" />
-    <option name="height" value="1100" />
+    <option name="x" value="60" />
+    <option name="y" value="-16" />
+    <option name="width" value="1918" />
+    <option name="height" value="1057" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -320,7 +351,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -335,23 +365,25 @@
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="microblog" is-module-sdk="true">
+        <option name="useSoftWraps" value="true" />
         <option name="myUseModuleSdk" value="true" />
         <option name="myModuleName" value="microblog" />
       </console-settings>
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\devspace\comp205\guessong\app" />
-      <recent name="D:\devspace\comp205\simple_tournament\app\resource" />
-      <recent name="D:\devspace\comp205\simple_tournament" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\devspace\comp205\guessong\app\templates" />
       <recent name="D:\devspace\comp205\simple_tournament\app\templates" />
       <recent name="D:\devspace\comp205\simple_tournament\app\resource" />
       <recent name="D:\devspace\comp205\simple_tournament\app" />
       <recent name="D:\devspace\comp205\microblog\app\templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\devspace\comp205\guessong" />
+      <recent name="D:\devspace\comp205\guessong\app" />
+      <recent name="D:\devspace\comp205\simple_tournament\app\resource" />
+      <recent name="D:\devspace\comp205\simple_tournament" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -366,7 +398,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Flask server.Unnamed">
+  <component name="RunManager" selected="Python.spotify_to_itunes_playlist_tool">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python">
       <module name="microblog" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -389,6 +421,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="spotify_to_itunes_playlist_tool" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="microblog" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/spotify_to_itunes_playlist_tool.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="Unnamed" type="Python.FlaskServer" factoryName="Flask server">
       <option name="additionalOptions" value="" />
       <option name="application" value="" />
@@ -409,7 +460,13 @@
     <list>
       <item itemvalue="Flask server.Unnamed" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.spotify_to_itunes_playlist_tool" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.spotify_to_itunes_playlist_tool" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
