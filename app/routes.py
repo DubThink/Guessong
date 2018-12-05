@@ -40,14 +40,17 @@ def testbackend():
 
 @app.route('/game', methods=["GET", "POST"])
 def game():
-    print("What?")
-    return render_template('404.html')
-
     if request.method == 'POST':
-        print(request.form["data"])
+        print(request.form["name"])
         return redirect(url_for('game'))
-    #return render_template('game.html', async_mode=socketio.async_mode)
+
     return render_template('game.html')
+
+@app.route('/create_game', methods=["GET", "POST"])
+def creategame():
+
+@app.route('join_game', methods=["GET", "POST"])
+def joingame():
 
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
