@@ -65,11 +65,15 @@ def create_lobby(message):
 #Expects message to contain name and room
 @socket.on('join_lobby')
 def join_lobby(message):
-    error = joinLobby(message['room'], message['name'])
-
-    join_room(message['room'])
-    print('joined ' + message['room'])
-    emit('join_message', message['name'] + 'has joined the room', room=message['room'])
+    joined = joinLobby(message['room'], message['name'])
+    if joined == None: #None means room didn't exist
+        emit('redirect', {'error_type': 'room'})
+    elif joined == False:
+        emit('redirect', {'error_type': 'name'})
+    else:
+        join_room(message['room'])
+        print('joined ' + message['room'])
+        emit('join_message', message['name'] + 'has joined the room', room=message['room'])
 
 @socket.on('chat_message')
 def chat_message(message):
