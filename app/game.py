@@ -48,12 +48,15 @@ class Game:
 
     def __init__(self,roomcode):
         self.roomID=roomcode
+        self.gameUsers = {}
+        self.unplayedSongs = []
+        self.playedSongs = []
 
     def addUser(self, username):
         if username in self.gameUsers:
-            # user already exists
+            print("user already exists")
             return False
-        user = GameUser( username)
+        user = GameUser(username)
         self.gameUsers[username]=user
         return True
 
@@ -144,12 +147,13 @@ class GameManager:
             randcode = '%04x' % random.randint(0,0xFFFF)
         game = Game(randcode)
         self.roomToGame[randcode] = game
+        print(randcode)
         return game
         
     def startGame(self, key):
-        if key in self.roomToGame:
+        if key not in self.roomToGame:
             return False
-        self.roomToGame[key].nextRound()
+        self.roomToGame[key].startRound()
         self.startTicking()
         return True
 
