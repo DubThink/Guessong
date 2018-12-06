@@ -38,9 +38,9 @@ def testspotify(s):
 def testbackend():
     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
-@app.route('/game/<create>/<name>/<room>', methods=["GET", "POST"])
+@app.route('/game/<create>:<string:name>:<string:room>', methods=["GET", "POST"])
 def game(create, name, room):
-    return render_template('game.html', create=create, room=room, username=name)
+    return render_template('game.html', async_mode=socketio.async_mode)
 
 @app.route('/create_game', methods=["GET", "POST"])
 def creategame():
@@ -58,18 +58,19 @@ def create_lobby(message):
    room = createLobby() 
    joinLobby(room, message['name']) 
    join_room(room)
-   print(message['name'])
+   emit('room_code', {'room': room})
 
 #Expects message to contain name and room
 @socket.on('join_lobby')
 def join_lobby(message):
     joinLobby(message['room'], message['name'])
+    join_room(message['room'])
     print('joined ' + message['room'])
-    emit('reply', message['name'] + 'has joined the room', broadcast=True)
+    emit('join_message', message['name'] + 'has joined the room', room=message['room'])
 
 @socket.on('chat_message')
 def chat_message(message):
-   emit( 'chat_message', message, broadcast=True); 
+   emit( 'chat_message', message, room=message["room"]);
 
 @socket.on('start_game')
 def start_game(message):
