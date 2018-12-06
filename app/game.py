@@ -10,9 +10,16 @@ def similar(a, b):
 class GameUser:
     name = ""
     score = 0
+    # used to prevent people sending correct guesses after they guess correctly
+    hasGuessedCorrectly=False
 
     def __init__(self, name):
         self.name = name
+
+    def addScore(self,score):
+        if not self.hasGuessedCorrectly:
+            self.score += score
+        self.hasGuessedCorrectly = True
 
 
 GUESS_INCORRECT = 'incorrect'
@@ -28,9 +35,7 @@ class Game:
     playlistID = None
     unplayedSongs = []
     playedSongs = []
-    currentSong={ 'name' : 'September',
-                 'artist' : 'Earth wind and fire',
-                  'thumbnail' : ''}
+    currentSong=None
     gameUsers = {}
     roomID = "tacocode"
     gameStarted = False
@@ -60,14 +65,17 @@ class Game:
         return True
     
     def endGame(self):
-        self.state=GAME_END
+        self.state = GAME_END
         return True
 
     def checkGuess(self, username, guess):
+        if username not in self.gameUsers:
+            return GUESS_INCORRECT
         if self.currentSong is None:
             return 0
         sim = similar(guess,self.currentSong['name'])>0.9
         if sim > 0.95:
+            self.gameUsers[username].addScore(int(time.time()-self.startTime))
             return GUESS_CORRECT
         if sim > 0.80:
             return GUESS_CLOSE
@@ -75,9 +83,6 @@ class Game:
 
     def getSongInfo(self):
         return self.currentSong
-
-    def getRoomCode(self):
-        return self.roomID
 
     def getPlaylistMeta(self):
         if self.playlistData is None:
@@ -101,12 +106,15 @@ class Game:
         self.state=ROUND_LIVE
         self.startTime = time.time()
 
-        if len(self.unplayedSongs)==0:
-            self.unplayedSongs=musicapi.getPlaylist(self.playlistID)
+        for gameUser in self.gameUsers:
+            gameUser.hasGuessedCorrectly=False
+
+        if len(self.unplayedSongs) == 0:
+            self.unplayedSongs = musicapi.getPlaylist(self.playlistID)
             random.shuffle(self.unplayedSongs)
         if self.currentSong:
             self.playedSongs.append(self.currentSong)
-        self.currentSong=self.unplayedSongs.pop()
+        self.currentSong = self.unplayedSongs.pop()
 
 
 
@@ -123,11 +131,19 @@ class GameManager:
     updateClients=None
 
     def getGame(self, key):
+        if key not in self.roomToGame:
+            return None
         return self.roomToGame[key]
 
-    def createGame(self, roomcode):
-        game = Game(roomcode)
-        self.roomToGame[game.getRoomCode()] = game
+    def createGame(self):
+        # generate a random unique string of 4 hex chars.
+        # Using hex cause unlikely that there'll be a bad word
+        # b00b is the only one I can think of
+        randcode = '%04x'%random.randint(0,0xFFFF)
+        while randcode in self.roomToGame:
+            randcode = '%04x' % random.randint(0,0xFFFF)
+        game = Game(randcode)
+        self.roomToGame[randcode] = game
         return game
         
     def startGame(self, key):
