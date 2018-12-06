@@ -22,6 +22,7 @@ $(document).ready(function() {
     });
     socket.on('room_code', function(msg) {
         $('#room_code').text("Room Code: " + msg["room"]);
+        room = msg["room"]
     });
     socket.on('join_message', function(msg) {
         $('#chat_output').text("ATTENTION " + msg);
@@ -35,6 +36,7 @@ $(document).ready(function() {
         return false;
     });
     $('button#chat_submit').click(function(event) {
+        console.log(username + ", " + room);
         socket.emit('chat_message', {username: username, message: $('#chat_input').val(), room: room});
         return false;
     });
