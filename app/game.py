@@ -139,9 +139,9 @@ class GameManager:
         # generate a random unique string of 4 hex chars.
         # Using hex cause unlikely that there'll be a bad word
         # b00b is the only one I can think of
-        randcode = '%04x'%random.randint(0xFFFF)
+        randcode = '%04x'%random.randint(0,0xFFFF)
         while randcode in self.roomToGame:
-            randcode = '%04x' % random.randint(0xFFFF)
+            randcode = '%04x' % random.randint(0,0xFFFF)
         game = Game(randcode)
         self.roomToGame[randcode] = game
         return game
