@@ -2,17 +2,17 @@
 {% block app_content %}
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-
     <script type='text/javascript' src='../resource/gamesockets.js'></script>
     <div id='chat_output'>
         Chat:
     </div>
     <form id="chat" action='#'>
         <input type='text' id='chat_input'>
-    </form>        
+    </form>
+</br>
     <button id="chat_submit">Chat</button>
-
-    <form id="create_game">
+</br>
+    <form id="create_game"> <!-- section to create game -->
         <label for="room_name">Room Name:</label>
         <input type='text' id='room_name'>
         <input type='radio' name='room_type' value='public'>
@@ -25,10 +25,16 @@
         <input type='text' id='playlist'>
     </form>
 
-    <form id="create_game">
+</br>
+
+    <form id="guess_song"> <!-- section to guess the song -->
         <label for="guess_box">Guess:</label>
         <input type='text' id='guess_box'>
         <button type='button' id='guess_button'>Guess Song</button>
     </form>
+
+<div id="room_code">
+    Room Code: ...
+</div>
 
 {% endblock %}

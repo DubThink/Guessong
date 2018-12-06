@@ -125,8 +125,8 @@ class GameManager:
     def getGame(self, key):
         return self.roomToGame[key]
 
-    def createGame(self):
-        game = Game("bobb")
+    def createGame(self, roomcode):
+        game = Game(roomcode)
         self.roomToGame[game.getRoomCode()] = game
         return game
         
