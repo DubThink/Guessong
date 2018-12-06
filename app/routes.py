@@ -55,7 +55,8 @@ def joingame():
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
 def create_lobby(message):
-   room = createLobby() 
+   room = createLobby()
+   print( "created" )
    if not joinLobby(room, message['name']) :
        emit('redirect', {'error_type': 'name'})
    else:
@@ -77,8 +78,9 @@ def join_lobby(message):
 
 @socket.on('chat_message')
 def chat_message(message):
-   emit( 'chat_message', message, room=message["room"]);
+   emit('chat_message', message, room=message["room"])
 
 @socket.on('start_game')
 def start_game(message):
-    print(message)
+    startGame(message["room"], message["username"], message["playlist"], message["song_length"])
+    emit('game_started', room=message["room"])

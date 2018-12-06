@@ -1,12 +1,13 @@
 $(document).ready(function() {
     console.log("in gamesockets.js");
     var namespace = '/';
-    var username = ""
-    var room = ""
+    var username = "";
+    var room = "";
+    var game_started = false;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     socket.on('connect', function() {
-        console.log("connected")
-        urldata = urlData()
+        console.log("connected");
+        urldata = urlData();
         username = urldata["name"];
         room = urldata["room"];
         if(urldata["create"] == "True"){
@@ -22,18 +23,13 @@ $(document).ready(function() {
     });
     socket.on('room_code', function(msg) {
         $('#room_code').text("Room Code: " + msg["room"]);
-        room = msg["room"]
+        room = msg["room"];
     });
     socket.on('join_message', function(msg) {
         $('#chat_output').text("ATTENTION " + msg);
     });
-    $('button#join').click(function(event) {
-        socket.emit('join_lobby', {name: $('#name').val(), room: $('#room_name').val()});
-        return false;
-    });
-    $('button#create_lobby').click(function(event) {
-        socket.emit('create_lobby', {name: $('#name').val()});
-        return false;
+    socket.on('game_started', function(msg) {
+       game_started = true;
     });
     $('button#chat_submit').click(function(event) {
         console.log(username + ", " + room);
@@ -42,7 +38,8 @@ $(document).ready(function() {
     });
     $('button#start').click(function(event) {
         socket.emit('start_game', {
-            username: username, 
+            username: username,
+            room: room,
             room_name: $('#room_name').val(),
             playlist: $('#playlist').val(),
             room_type: $("input[name='room_type']:checked").val(),
