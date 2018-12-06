@@ -2,7 +2,7 @@ from time import time
 
 from app.backend import * 
 import json
-from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request
+from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio
@@ -55,8 +55,9 @@ def joingame():
 #Expects message to contain name : the user's name
 @socket.on('create_lobby')
 def create_lobby(message):
-   room = createLobby() 
+   room = createLobby()
    if not joinLobby(room, message['name']) :
+       return jsonify(name)
        emit('redirect', {'error_type': 'name'})
    else:
        join_room(room)
@@ -69,6 +70,7 @@ def join_lobby(message):
     if joined == None: #None means room didn't exist
         emit('redirect', {'error_type': 'room'})
     elif joined == False:
+        print('in join_lobby error statement 2')
         emit('redirect', {'error_type': 'name'})
     else:
         join_room(message['room'])
@@ -77,7 +79,7 @@ def join_lobby(message):
 
 @socket.on('chat_message')
 def chat_message(message):
-   emit( 'chat_message', message, room=message["room"]);
+   emit('chat_message', message, room=message["room"]);
 
 @socket.on('start_game')
 def start_game(message):
