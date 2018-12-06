@@ -49,3 +49,4 @@ microblog.log*
 
 *.env
 .env
+.idea/*
