@@ -91,17 +91,12 @@ class Game:
         return self.currentSong
 
     def getPlaylistMeta(self):
-        if self.playlistData is None:
-            return None
-        try:
-            return { 'name' : self.playlistData[0]['name'],
-                   'thumbnail' : self.playlistData[0]['thumbnail_url'],
-                   'link' : self.playlistData[0]['preview_url']}
-        except KeyError as e:
-            return None
+        return { 'name' : self.currentSong['name'],
+               'thumbnail' : self.currentSong['thumbnail_url'],
+               'link' : self.currentSong['preview_url']}
+
 
     def setPlaylist(self, playlist_id):
-        self.playlistData = musicapi.getPlaylistMeta(playlist_id)
         self.playlistID = playlist_id
 
         return True
