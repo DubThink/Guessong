@@ -18,6 +18,9 @@ def startGame(room, name, playlist, song_length):
     app.gameManager.startGame(room)
 
 def getGame(room):
+    return app.gameManager.getGame(room)
+
+def getGamePlaylist(room):
     return app.gameManager.getGame(room).getPlaylistMeta()
 
 def updateGameState(roomcode, game):

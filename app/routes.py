@@ -87,6 +87,12 @@ def start_game(message):
 
 @socketio.on('data_request')
 def data_request(message):
-    game = getGame(message["room"])
+    game = getGamePlaylist(message["room"])
     emit("update_game", game, room=message["room"])
+
+@socketio.on('song_guess')
+def song_guess(message):
+    game = getGame(message["room"])
+    result = game.checkGuess(message["username"], message["guess"])
+    emit('guess_result', result)
 
