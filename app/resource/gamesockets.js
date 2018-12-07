@@ -9,7 +9,8 @@ $(document).ready(function() {
     //var audio = $("#audio");
         //$("#audio_src").attr("src", 'https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a');
         var audio_player = document.createElement("audio");
-        audio_player.src="http://funksyou.com/fileDownload/Songs/0/30828.mp3";
+        //audio_player.src="http://funksyou.com/fileDownload/Songs/0/30828.mp3";
+        audio_player.src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a";
         audio_player.volume=0.10;
         audio_player.autoPlay=false;
         audio_player.preLoad=true;
@@ -26,6 +27,11 @@ $(document).ready(function() {
             socket.emit('join_lobby', {name: username, room: room})
             $('#room_code').text("Room Code: " + room);
         }
+    });
+    socket.on('redirect', function(event){
+        window.stop();
+        console.log("hello from redirect");
+        //$(document.getElementById('#centered').innerHTML = 'hello from redirect';
     });
     socket.on('chat_message', function(msg) {
         $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
