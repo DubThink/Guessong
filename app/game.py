@@ -85,19 +85,21 @@ class Game:
         return GUESS_INCORRECT
 
     def getSongInfo(self):
+        print(self.currentSong)
         return self.currentSong
 
     def getPlaylistMeta(self):
         if self.playlistData is None:
             return None
         try:
-            return { 'name' : self.playlistData['name'],
-                   'thumbnail' : self.playlistData['images'][0]['url'],
-                   'link' : self.playlistData['external_urls']['spotify']}
+            return { 'name' : self.playlistData[0]['name'],
+                   'thumbnail' : self.playlistData[0]['thumbnail_url'],
+                   'link' : self.playlistData[0]['preview_url']}
         except KeyError as e:
             return None
 
     def setPlaylist(self, playlist_id):
+        self.playlistData = musicapi.getPlaylistMeta(playlist_id)
         self.playlistID = playlist_id
 
         return True
@@ -106,10 +108,11 @@ class Game:
         return {{"name":n.name,"score":n.score} for n in self.gameUsers.items()}
 
     def startRound(self):
+        print("started round")
         self.state=ROUND_LIVE
         self.startTime = time.time()
 
-        for gameUser in self.gameUsers:
+        for key, gameUser in self.gameUsers.items():
             gameUser.hasGuessedCorrectly=False
 
         if len(self.unplayedSongs) == 0:
@@ -180,6 +183,7 @@ class GameManager:
             threading.Timer(1, self._updateTick).start()
         print('ticking...')
         for roomcode, game in self.roomToGame.items():
+            self.updateClients(roomcode, game)
             if game.state is ROUND_LIVE and time.time()-game.startTime>30:
                 killgame=game.finishRound()
                 if(killgame):
