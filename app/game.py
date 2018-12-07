@@ -4,8 +4,15 @@ import threading
 import time
 import random
 
+"""
+* game.py
+* manages the gamestate of guessong
+"""
+
 def similar(a, b):
+    """ :returns the similarity of a and b in the range [0:1] """
     return SequenceMatcher(None, a, b).ratio()
+
 
 class GameUser:
     name = ""
@@ -53,7 +60,7 @@ class Game:
         if username in self.gameUsers:
             # user already exists
             return False
-        user = GameUser( username)
+        user = GameUser(username)
         self.gameUsers[username]=user
         return True
 
@@ -139,15 +146,15 @@ class GameManager:
         # generate a random unique string of 4 hex chars.
         # Using hex cause unlikely that there'll be a bad word
         # b00b is the only one I can think of
-        randcode = '%04x'%random.randint(0,0xFFFF)
+        randcode = '%04X'%random.randint(0,0xFFFF)
         while randcode in self.roomToGame:
-            randcode = '%04x' % random.randint(0,0xFFFF)
+            randcode = '%04X' % random.randint(0,0xFFFF)
         game = Game(randcode)
         self.roomToGame[randcode] = game
         return game
         
     def startGame(self, key):
-        if key in self.roomToGame:
+        if key not in self.roomToGame:
             return False
         self.roomToGame[key].nextRound()
         self.startTicking()

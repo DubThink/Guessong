@@ -8,6 +8,7 @@ from flask_socketio import SocketIO, emit
 from app.game import GameManager
 from app import backend
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
@@ -18,6 +19,12 @@ socketio = SocketIO(app)
 login.login_view = 'login'
 gameManager = GameManager()
 gameManager.updateClients = backend.updateGameState
+
+# rest API
+from flask_restful import Resource, Api
+from app import playlistAPI
+restAPI = Api(app)
+restAPI.add_resource(playlistAPI.AddPlaylist, '/playlistapi')
 
 from app import routes, models
 
