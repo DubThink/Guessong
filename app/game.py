@@ -102,7 +102,7 @@ class Game:
         return True
 
     def getPlayersData(self):
-        return {{"name":n.name,"score":n.score} for n in self.gameUsers.items()}
+        return [{"name":n.name,"score":n.score} for n in self.gameUsers.items()]
 
     def startRound(self):
         print("started round")
