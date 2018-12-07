@@ -4,17 +4,22 @@ import threading
 import time
 import random
 
+"""
+* game.py
+* manages the gamestate of guessong
+"""
+
 def similar(a, b):
+    """ :returns the similarity of a and b in the range [0:1] """
     return SequenceMatcher(None, a, b).ratio()
 
-class GameUser:
-    name = ""
-    score = 0
-    # used to prevent people sending correct guesses after they guess correctly
-    hasGuessedCorrectly=False
 
+class GameUser:
     def __init__(self, name):
         self.name = name
+        self.score = 0
+        # used to prevent people sending correct guesses after they guess correctly
+        self.hasGuessedCorrectly = False
 
     def addScore(self,score):
         if not self.hasGuessedCorrectly:
@@ -31,26 +36,23 @@ ROUND_LIVE=1
 ROUND_END=2
 GAME_END=3
 
+
 class Game:
-    playlistID = None
-    unplayedSongs = []
-    playedSongs = []
-    currentSong=None
-    gameUsers = {}
-    roomID = "tacocode"
-    gameStarted = False
-    playlistData = None
-    max_songs=4
+    def __init__(self, roomcode):
 
-    # game state data
-    startTime=0
-    state=WAITING
-
-    def __init__(self,roomcode):
-        self.roomID=roomcode
-        self.gameUsers = {}
+        self.playlistID = None
         self.unplayedSongs = []
         self.playedSongs = []
+        self.currentSong = None
+        self.gameUsers = {}
+        self.roomID = roomcode
+        self.gameStarted = False
+        self.playlistData = None
+        self.max_songs = 4
+
+        # game state data
+        self.startTime = 0
+        self.state = WAITING
 
     def addUser(self, username):
         if username in self.gameUsers:
@@ -121,14 +123,14 @@ class Game:
         if self.currentSong:
             self.playedSongs.append(self.currentSong)
         self.currentSong = self.unplayedSongs.pop()
-
-
+        print("new song:",self.currentSong)
 
     def finishRound(self):
         self.state=ROUND_END
         if len(self.playedSongs)>=self.max_songs:
             return True
         self.startTime = time.time()
+        print('finished round')
         return False
 
 class GameManager:
@@ -145,9 +147,9 @@ class GameManager:
         # generate a random unique string of 4 hex chars.
         # Using hex cause unlikely that there'll be a bad word
         # b00b is the only one I can think of
-        randcode = '%04x'%random.randint(0,0xFFFF)
+        randcode = '%04X'%random.randint(0,0xFFFF)
         while randcode in self.roomToGame:
-            randcode = '%04x' % random.randint(0,0xFFFF)
+            randcode = '%04X' % random.randint(0,0xFFFF)
         game = Game(randcode)
         self.roomToGame[randcode] = game
         print(randcode)
@@ -158,6 +160,7 @@ class GameManager:
             return False
         self.roomToGame[key].startRound()
         self.startTicking()
+        self.updateClients(key, self.roomToGame[key])
         return True
 
     def endGame(self, key):
@@ -183,14 +186,13 @@ class GameManager:
             threading.Timer(1, self._updateTick).start()
         print('ticking...')
         for roomcode, game in self.roomToGame.items():
-            self.updateClients(roomcode, game)
-            if game.state is ROUND_LIVE and time.time()-game.startTime>30:
+            if game.state is ROUND_LIVE and time.time()-game.startTime>10:
                 killgame=game.finishRound()
                 if(killgame):
                     self.endGame(game.roomID)
                 if self.updateClients:
                     self.updateClients(roomcode, game)
-            elif game.state is ROUND_END and time.time()-game.startTime>15:
+            elif game.state is ROUND_END and time.time()-game.startTime>6       :
                 game.startRound()
                 if self.updateClients:
                     self.updateClients(roomcode, game)
