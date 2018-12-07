@@ -2,7 +2,7 @@ from time import time
 
 from app.backend import * 
 import json
-from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request
+from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio
@@ -14,7 +14,7 @@ import requests
 import time
 ADMIN_ID = 1
 
-socket = SocketIO(app)
+#socket = SocketIO(app)
 
 @app.route('/')
 @app.route('/index')
@@ -53,25 +53,40 @@ def joingame():
         return redirect(url_for('game', create=False, name=request.form["name"], room=request.form["room_code"]))
 
 #Expects message to contain name : the user's name
-@socket.on('create_lobby')
+@socketio.on('create_lobby')
 def create_lobby(message):
-   room = createLobby() 
-   joinLobby(room, message['name']) 
-   join_room(room)
-   emit('room_code', {'room': room})
+   room = createLobby()
+   print( "created" )
+   if not joinLobby(room, message['name']) :
+       emit('redirect', {'error_type': 'name'})
+   else:
+       join_room(room)
+       emit('room_code', {'room': room})
 
 #Expects message to contain name and room
-@socket.on('join_lobby')
+@socketio.on('join_lobby')
 def join_lobby(message):
-    joinLobby(message['room'], message['name'])
-    join_room(message['room'])
-    print('joined ' + message['room'])
-    emit('join_message', message['name'] + 'has joined the room', room=message['room'])
+    joined = joinLobby(message['room'], message['name'])
+    if joined == None: #None means room didn't exist
+        emit('redirect', {'error_type': 'room'})
+    elif joined == False:
+        emit('redirect', {'error_type': 'name'})
+    else:
+        join_room(message['room'])
+        print('joined ' + message['room'])
+        emit('join_message', message['name'] + 'has joined the room', room=message['room'])
 
-@socket.on('chat_message')
+@socketio.on('chat_message')
 def chat_message(message):
-   emit( 'chat_message', message, room=message["room"]);
+   emit('chat_message', message, room=message["room"])
 
-@socket.on('start_game')
+@socketio.on('start_game')
 def start_game(message):
-    print(message)
+    startGame(message["room"], message["username"], message["playlist"], message["song_length"])
+    emit('game_started', room=message["room"])
+
+@socketio.on('data_request')
+def data_request(message):
+    game = getGame(message["room"])
+    emit("update_game", game, room=message["room"])
+

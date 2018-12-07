@@ -1,12 +1,23 @@
 $(document).ready(function() {
     console.log("in gamesockets.js");
     var namespace = '/';
-    var username = ""
-    var room = ""
+    var username = "";
+    var room = "";
+    var game_started = false;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+    //var audio = $("#audio");
+        //$("#audio_src").attr("src", 'https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a');
+        var audio_player = document.createElement("audio");
+        //audio_player.src="http://funksyou.com/fileDownload/Songs/0/30828.mp3";
+        audio_player.src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a";
+        audio_player.volume=0.10;
+        audio_player.autoPlay=false;
+        audio_player.preLoad=true;
+
     socket.on('connect', function() {
-        console.log("connected")
-        urldata = urlData()
+        console.log("connected");
+        urldata = urlData();
         username = urldata["name"];
         room = urldata["room"];
         if(urldata["create"] == "True"){
@@ -17,30 +28,41 @@ $(document).ready(function() {
             $('#room_code').text("Room Code: " + room);
         }
     });
+    socket.on('redirect', function(event){
+        window.stop();
+        console.log("hello from redirect");
+        //$(document.getElementById('#centered').innerHTML = 'hello from redirect';
+    });
     socket.on('chat_message', function(msg) {
         $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
     });
     socket.on('room_code', function(msg) {
         $('#room_code').text("Room Code: " + msg["room"]);
+        room = msg["room"];
     });
     socket.on('join_message', function(msg) {
         $('#chat_output').text("ATTENTION " + msg);
     });
-    $('button#join').click(function(event) {
-        socket.emit('join_lobby', {name: $('#name').val(), room: $('#room_name').val()});
-        return false;
+    socket.on('game_started', function(msg) {
+       game_started = true;
+       setInterval(requestGameData, 500);
     });
-    $('button#create_lobby').click(function(event) {
-        socket.emit('create_lobby', {name: $('#name').val()});
-        return false;
+    socket.on('update_game', function(msg) {
+        console.log(msg);
+        //obj.load();
+        if(audio_player.paused == true) {
+            audio_player.play();
+        }
     });
     $('button#chat_submit').click(function(event) {
+        console.log(username + ", " + room);
         socket.emit('chat_message', {username: username, message: $('#chat_input').val(), room: room});
         return false;
     });
     $('button#start').click(function(event) {
         socket.emit('start_game', {
-            username: username, 
+            username: username,
+            room: room,
             room_name: $('#room_name').val(),
             playlist: $('#playlist').val(),
             room_type: $("input[name='room_type']:checked").val(),
@@ -50,6 +72,9 @@ $(document).ready(function() {
     $('button#guess_button').click(function(event) {
         socket.emit('song_guess', {username: username, guess: $('#guess_box').val() });
     });
+    function requestGameData(){
+        socket.emit("data_request", {username: username, room: room});
+    }
 });
 
 function urlData() {
@@ -59,4 +84,6 @@ function urlData() {
             name : spliturl[1],
             room : spliturl[2]};
 }
+
+
 
