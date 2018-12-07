@@ -11,7 +11,7 @@ import random
 
 def similar(a, b):
     """ :returns the similarity of a and b in the range [0:1] """
-    return SequenceMatcher(None, a, b).ratio()
+    return SequenceMatcher(None, a.lower(), b.lower()).ratio()
 
 
 class GameUser:
