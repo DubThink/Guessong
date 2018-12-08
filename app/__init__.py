@@ -18,7 +18,7 @@ login = LoginManager(app)
 socketio = SocketIO(app)
 login.login_view = 'login'
 gameManager = GameManager()
-gameManager.updateClients = backend.updateGameState
+gameManager.updateClients = backend.update_game_state
 
 # rest API
 from flask_restful import Resource, Api
