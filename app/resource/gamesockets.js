@@ -31,11 +31,16 @@ $(document).ready(function() {
             $('#create_game').hide();
         }
     });
+
     socket.on('redirect', function(event){
-        window.stop();
-        console.log("hello from redirect");
-        //$(document.getElementById('#centered').innerHTML = 'hello from redirect';
+        console.log("hello from redirect pre-replace");
+        window.stop(); //supposed to stop the window from redirecting
+        location.replace("index"); //supposed to redirect ?? back to the index page - i only put this here to see if it would work or not
+        document.getElementById("#createValidation").innerHTML = "trying to join a room that doesn't exist!!";
+        //changes the html right below the form entry to output error message
+        console.log("hello from redirect post-replace");
     });
+
     socket.on('chat_message', function(msg) {
         $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
     });
