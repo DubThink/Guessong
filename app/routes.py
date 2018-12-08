@@ -1,11 +1,10 @@
 from time import time
 
-from app.backend import * 
 import json
 from flask import render_template, flash, redirect, url_for, abort, send_from_directory, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
-from app import app, db, socketio
+from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
 import os
 from app.models import User
@@ -55,9 +54,9 @@ def joingame():
 #Expects message to contain name : the user's name
 @socketio.on('create_lobby')
 def create_lobby(message):
-   room = createLobby()
+   room = backend.create_lobby()
    print( "created" )
-   if not joinLobby(room, message['name']) :
+   if not backend.join_lobby(room, message['name']) :
        emit('redirect', {'error_type': 'name'})
    else:
        join_room(room)
@@ -66,7 +65,7 @@ def create_lobby(message):
 #Expects message to contain name and room
 @socketio.on('join_lobby')
 def join_lobby(message):
-    joined = joinLobby(message['room'], message['name'])
+    joined = backend.join_lobby(message['room'], message['name'])
     if joined == None: #None means room didn't exist
         emit('redirect', {'error_type': 'room'})
     elif joined == False:
@@ -82,18 +81,17 @@ def chat_message(message):
 
 @socketio.on('start_game')
 def start_game(message):
-    startGame(message["room"], message["username"], message["playlist"], message["song_length"])
+    backend.start_game(message["room"], message["username"], message["playlist"], message["song_length"])
     emit('game_started', room=message["room"])
 
 @socketio.on('data_request')
 def data_request(message):
-    game = getGamePlaylist(message["room"])
-    print(game)
+    game = backend.get_game(message["room"])
     emit("update_game", game, room=message["room"])
 
 @socketio.on('song_guess')
 def song_guess(message):
-    game = getGame(message["room"])
+    game = backend.get_game(message["room"])
     result = game.checkGuess(message["username"], message["guess"])
     emit('guess_result', result)
 
