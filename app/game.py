@@ -102,7 +102,7 @@ class Game:
         return True
 
     def getPlayersData(self):
-        return {{"name":n.name,"score":n.score} for n in self.gameUsers.items()}
+        return [{"name":n.name,"score":n.score} for n in self.gameUsers.items()]
 
     def startRound(self):
         print("started round")
@@ -181,7 +181,7 @@ class GameManager:
             threading.Timer(1, self._updateTick).start()
         print('ticking...')
         for roomcode, game in self.roomToGame.items():
-            if game.state is ROUND_LIVE and time.time()-game.startTime>10:
+            if game.state is ROUND_LIVE and time.time()-game.startTime>15:
                 killgame=game.finishRound()
                 if(killgame):
                     self.endGame(game.roomID)
