@@ -3,30 +3,21 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from time import time
 
-class PlaylistScore(db.Model):
-    __tablename__='playlistscore'
-    # id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'), primary_key=True)
-    timestamp = db.Column(db.Integer)
-    score = db.Column(db.Integer)
-
-    user = db.relationship("User",back_populates="scores")
-    playlist=db.relationship("Playlist",back_populates="scores")
-
-    def __repr__(self):
-        return '<PlaylistScore {} {} {} {}>'.format(self.user_id,self.team_id,self.score,self.timestamp)
-
-class PlaylistSong(db.Model):
-    __tablename__='playlistsong'
-    song_id = db.Column(db.Integer, db.ForeignKey('song.id'), primary_key=True)
-    playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'), primary_key=True)
-
-    song = db.relationship("User",back_populates="playlists")
-    playlist=db.relationship("Playlist",back_populates="songs")
-
-    def __repr__(self):
-        return '<PlaylistSong {} {} {} {}>'.format(self.user_id,self.team_id,self.score,self.timestamp)
+# class PlaylistScore(db.Model):
+#     __tablename__='playlistscore'
+#     # id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+#     playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'), primary_key=True)
+#     timestamp = db.Column(db.Integer)
+#     score = db.Column(db.Integer)
+#
+#     user = db.relationship("User",back_populates="scores")
+#     playlist=db.relationship("Playlist",back_populates="scores")
+#
+playlist_song = db.Table('playlistsong', db.Model.metadata,
+                         db.Column('song_id', db.Integer, db.ForeignKey('song.id')),
+                         db.Column('playlist_id', db.Integer, db.ForeignKey('playlist.id'))
+)
 
 class User(UserMixin,db.Model):
     __tablename__='user'
@@ -35,7 +26,7 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
 
-    scores = db.relationship("PlaylistScore",back_populates="user")
+    # scores = db.relationship("PlaylistScore",back_populates="user")
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -58,19 +49,35 @@ class Playlist(db.Model):
 
     spotifyid = db.Column(db.String(1024))
 
-    scores = db.relationship("PlaylistScore",back_populates="playlist")
-    songs = db.relationship("PlaylistSongs",back_populates="playlist")
+    songs = db.relationship("Song",
+                            secondary=playlist_song)
+
+    def toJSON(self):
+        return {'id':self.id,'name':self.name,'thumbnail':self.thumbnail,'song_count':len(self.songs)}
 
     def __repr__(self):
-        return '<Playlist {}>'.format(self.name)
+        return '<Playlist id:{} name:{}>'.format(self.id,self.name)
 
 class Song(db.Model):
     __tablename__='song'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), index=True)
-    artist = db.Column(db.String(256), index=True)
+    name = db.Column(db.String(256))
+    artist = db.Column(db.String(256))
+    album = db.Column(db.String(256))
     thumbnail_url = db.Column(db.String(256))
     preview_url = db.Column(db.String(256))
     external_url = db.Column(db.String(256))
+    itunes_resource_id = db.Column(db.Integer, index=True)
 
-    playlists = db.relationship("PlaylistSongs",back_populates="song")
+    def toJSON(self):
+        return {
+            "name": self.name,
+            "artist": self.artist,
+            "album": self.album,
+            "thumbnail_url": self.thumbnail_url,
+            "preview_url": self.preview_url,
+            "external_url": self.external_url,
+        }
+    def __repr__(self):
+        return "Song<'%s' by '%s' on album '%s' with itunes id %i and internal id %i>" %\
+               (self.name,self.artist,self.album,self.itunes_resource_id,self.id)

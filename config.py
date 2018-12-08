@@ -11,3 +11,4 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SPOTIFY_ID=os.environ.get('SPOTIFY_ID').encode()
     SPOTIFY_SECRET=os.environ.get('SPOTIFY_SECRET').encode()
+    PLAYLIST_API_SECRET=os.environ.get('PLAYLIST_API_SECRET')

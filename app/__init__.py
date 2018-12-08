@@ -5,9 +5,6 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO, emit
-from app.game import GameManager
-from app import backend
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -15,6 +12,9 @@ db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
+
+from app.game import GameManager
+from app import backend
 socketio = SocketIO(app)
 login.login_view = 'login'
 gameManager = GameManager()
@@ -24,7 +24,9 @@ gameManager.updateClients = backend.update_game_state
 from flask_restful import Resource, Api
 from app import playlistAPI
 restAPI = Api(app)
-restAPI.add_resource(playlistAPI.AddPlaylist, '/playlistapi')
+restAPI.add_resource(playlistAPI.AddPlaylist, '/playlistapi/addplaylist')
+restAPI.add_resource(playlistAPI.CheckThread, '/playlistapi/checkthread')
+restAPI.add_resource(playlistAPI.ListPlaylists, '/playlistapi/playlists')
 
 from app import routes, models
 

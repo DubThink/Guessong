@@ -1,4 +1,5 @@
-from app import itunesapi as musicapi
+# from app import db
+from app.models import Song,Playlist
 from difflib import SequenceMatcher
 import threading
 import time
@@ -41,7 +42,7 @@ GAME_END=3
 class Game:
     def __init__(self, roomcode):
 
-        self.playlistID = None
+        self.playlist = None
         self.unplayedSongs = []
         self.playedSongs = []
         self.currentSong = None
@@ -49,7 +50,7 @@ class Game:
         self.roomID = roomcode
         self.gameStarted = False
         self.playlistData = None
-        self.max_songs = 4
+        self.max_songs = 10
 
         # game state data
         self.startTime = 0
@@ -60,7 +61,7 @@ class Game:
         prints a bunch of stuff to help with debugging
         """
         print("\nDebugging game state for game <%s>"%self.roomID)
-        print(":playlistID <%s>"%self.playlistID)
+        print(":playlist <%s>"%self.playlist)
         print(":currentSong <%s>"%str(self.currentSong))
         print(":startTime <%f>"%self.startTime)
         print(":time.time() <%f>"%time.time())
@@ -96,7 +97,7 @@ class Game:
             return GUESS_INCORRECT
         if self.currentSong is None:
             return 0
-        sim = similar(guess,self.currentSong['name'])>0.9
+        sim = similar(guess,self.currentSong.name)>0.9
         if sim > 0.95:
             self.gameUsers[username].add_score(int(time.time() - self.startTime))
             return GUESS_CORRECT
@@ -106,14 +107,17 @@ class Game:
 
     def get_song_info(self):
         """ Gets current song object as a dict/json """
-        return self.currentSong
+        return self.currentSong.toJSON()
 
     def get_playlist_meta(self):
         """ Gets the metadata of the playlist """
-        return musicapi.get_playlist_meta(self.playlistID)
+        return self.playlist.toJSON()
 
     def set_playlist(self, playlist_id):
-        self.playlistID = playlist_id
+        """ sets game's playlist. returns false if playlist does not exist """
+        if Playlist.query.filter_by(id=playlist_id).first() is None:
+            return False
+        self.playlist=Playlist.query.filter_by(id=playlist_id).first()
         return True
 
     def get_players_data(self):
@@ -128,7 +132,7 @@ class Game:
             gameUser.hasGuessedCorrectly=False
 
         if len(self.unplayedSongs) == 0:
-            self.unplayedSongs = musicapi.get_playlist_songs(self.playlistID)
+            self.unplayedSongs = self.playlist.songs
             random.shuffle(self.unplayedSongs)
         if self.currentSong:
             self.playedSongs.append(self.currentSong)
