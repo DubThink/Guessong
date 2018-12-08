@@ -87,11 +87,13 @@ def start_game(message):
 @socketio.on('data_request')
 def data_request(message):
     game = backend.get_game(message["room"])
-    emit("update_game", game, room=message["room"])
+    print("info:", end=" ")
+    print(game.get_song_info())
+    emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
 
 @socketio.on('song_guess')
 def song_guess(message):
     game = backend.get_game(message["room"])
-    result = game.checkGuess(message["username"], message["guess"])
+    result = game.check_guess(message["username"], message["guess"])
     emit('guess_result', result)
 
