@@ -22,10 +22,13 @@ $(document).ready(function() {
         room = urldata["room"];
         if(urldata["create"] == "True"){
             socket.emit('create_lobby', {name: username})
+            $('#guess_song').hide();
         }
         else {
             socket.emit('join_lobby', {name: username, room: room})
             $('#room_code').text("Room Code: " + room);
+            $('#guess_song').hide();
+            $('#create_game').hide();
         }
     });
     socket.on('redirect', function(event){
@@ -37,7 +40,7 @@ $(document).ready(function() {
         $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
     });
     socket.on('room_code', function(msg) {
-        $('#room_code').append("Room Code: " + msg["room"]);
+        $('#room_code').text("Room Code: " + msg["room"]);
         room = msg["room"];
     });
     socket.on('join_message', function(msg) {
@@ -45,6 +48,8 @@ $(document).ready(function() {
     });
     socket.on('game_started', function(msg) {
        game_started = true;
+       $('#create_game').hide();
+       $('#guess_song').show();
        setInterval(requestGameData, 500);
     });
     socket.on('update_game', function(msg) {
