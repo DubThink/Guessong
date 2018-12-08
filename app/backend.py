@@ -12,15 +12,13 @@ def join_lobby(room, username):
     else:
         return game.add_user(username)
 
-
 def start_game(room, name, playlist, song_length):
     game = app.gameManager.get_game(room)
     game.set_playlist(1)
     app.gameManager.start_game(room)
 
-
 def get_game(room):
-    return app.gameManager.get_game(room).get_playlist_meta()
+    return app.gameManager.get_game(room)
 
 
 def update_game_state(roomcode, game):
