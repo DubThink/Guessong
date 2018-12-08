@@ -117,7 +117,7 @@ class Game:
         return True
 
     def get_players_data(self):
-        return [{"name": n.name, "score": n.score} for n in self.gameUsers.items()]
+        return [{"name": n.name, "score": n.score} for n in self.gameUsers.values()]
 
     def start_round(self):
         print("started round")
@@ -177,7 +177,7 @@ class GameManager:
     def end_game(self, key):
         if key not in self.roomToGame:
             return False
-        self.get_game(key)._endGame()
+        self.get_game(key).end_game()
         self.roomToGame.pop(key)
         if len(self.roomToGame) is 0:
             self.stop_ticking()

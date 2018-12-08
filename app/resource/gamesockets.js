@@ -5,7 +5,7 @@ $(document).ready(function() {
     var room = "";
     var game_started = false;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-
+    var thumb_url = "";
     //var audio = $("#audio");
         //$("#audio_src").attr("src", 'https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a');
         var audio_player = document.createElement("audio");
@@ -13,8 +13,8 @@ $(document).ready(function() {
         //audio_player.src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a";
         audio_player.volume=0.10;
         audio_player.autoPlay=false;
-        audio_player.preLoad=true;
-
+        audio_player.preLoad=false;
+    var users;
     socket.on('connect', function() {
         console.log("connected");
         urldata = urlData();
@@ -44,24 +44,31 @@ $(document).ready(function() {
         room = msg["room"];
     });
     socket.on('join_message', function(msg) {
-        $('#chat_output').append("ATTENTION " + msg);
+        $('#chat_output').append("ATTENTION " + msg + "<br/>");
     });
     socket.on('game_started', function(msg) {
        game_started = true;
        $('#create_game').hide();
        $('#guess_song').show();
-       setInterval(requestGameData, 500);
+       setInterval(request_game_data, 500);
     });
     socket.on('update_game', function(msg) {
-        console.log(msg["link"]);
-        if(audio_player.src != msg["link"]) {
-            audio_player.src = msg["link"];
+        console.log(msg);
+        console.log(msg["song"]["preview_url"]);
+        if(audio_player.src != msg["song"]["preview_url"]) {
+            audio_player.src = msg["song"]["preview_url"];
             audio_player.load();
             audio_player.play();
         }
+        thumb_url = msg["song"]["thumbnail_url"];
+        users=msg["users"];
+        update_scoreboard();
     });
     socket.on('guess_result', function(msg){
-        $('#chat_output').text("GUESS RESULT: " + msg);
+        $('#chat_output').append("GUESS RESULT: " + msg);
+        if(msg == "correct"){
+            $('#thumb').attr("src", thumb_url);
+        }
     });
     $('button#chat_submit').click(function(event) {
         console.log(username + ", " + room);
@@ -81,8 +88,16 @@ $(document).ready(function() {
     $('button#guess_button').click(function(event) {
         socket.emit('song_guess', {username: username, room: room, guess: $('#guess_box').val() });
     });
-    function requestGameData(){
+    function request_game_data(){
         socket.emit("data_request", {username: username, room: room});
+    }
+    function update_scoreboard(){
+        $('div#scoreboard').empty();
+        console.log(users);
+        for (let user of users) {
+            console.log(user);
+            $('div#scoreboard').append( $("<div>" + user["name"] + ": " + user["score"] + "</div>"));
+        }
     }
 });
 
