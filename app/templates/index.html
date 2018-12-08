@@ -4,7 +4,14 @@
     {% if current_user.is_authenticated %}
     <h1>Hi, {{ current_user.username }}!</h1>
     {% endif %}
-    Welcome to Guessong!
+    <h2>Welcome to Guessong!</h2>
+
+    {% if error == 'room' %}
+        <h4 id="error_header">Room does not exist</h4>
+    {% endif %}
+    {% if error == 'name' %}
+        <h4 id="error_header">That name has been taken</h4>
+    {% endif %}
     <p id="join_p">
         <h3> Join a Game </h3>
         <form id="joining_game" method="POST" action='/join_game'>
@@ -19,7 +26,7 @@
         <h3> Create a Game </h3>
         <form id="creating_game" method="POST" action='/create_game'>
             <input type="text" name="name" id="createGame_name" placeholder="Name" required>
-            <input type="submit" value="Create Game" id="create_lobby" onC>
+            <input type="submit" value="Create Game" id="create_lobby">
         </form>
         <p id="joinValidation"> </p>
     </p>

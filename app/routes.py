@@ -6,6 +6,7 @@ from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
+
 import os
 from app.models import User
 from werkzeug.urls import url_parse
@@ -18,8 +19,11 @@ ADMIN_ID = 1
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Sam'}
-    return render_template('index.html', title='Home', user=user)
+    return render_template('index.html', title='Home')
+
+@app.route('/index/<error>')
+def index_err(error):
+    return render_template('index.html', title='Home', error=error)
 
 @app.route('/resource/<path:path>')
 def serve_file(path):
@@ -77,7 +81,16 @@ def join_lobby(message):
 
 @socketio.on('chat_message')
 def chat_message(message):
-   emit('chat_message', message, room=message["room"])
+    game = backend.get_game(message["room"])
+    if game.state == 1 or game.state == 2:
+        result = game.check_guess(message["username"], message["message"])
+        if result == 'correct':
+            emit('guess_result', result)
+        else:
+            emit('chat_message', message, room=message["room"])
+    else:
+        emit('chat_message', message, room=message["room"])
+
 
 @socketio.on('start_game')
 def start_game(message):
