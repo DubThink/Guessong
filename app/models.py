@@ -53,7 +53,12 @@ class Playlist(db.Model):
                             secondary=playlist_song)
 
     def toJSON(self):
-        return {'id':self.id,'name':self.name,'thumbnail':self.thumbnail,'song_count':len(self.songs)}
+        return {
+            'id':self.id,
+            'name':self.name,
+            'thumbnail':self.thumbnail,
+            'song_count':len(self.songs),
+        }
 
     def __repr__(self):
         return '<Playlist id:{} name:{}>'.format(self.id,self.name)
@@ -77,6 +82,7 @@ class Song(db.Model):
             "thumbnail_url": self.thumbnail_url,
             "preview_url": self.preview_url,
             "external_url": self.external_url,
+            "itunes_resource_id": self.itunes_resource_id,
         }
     def __repr__(self):
         return "Song<'%s' by '%s' on album '%s' with itunes id %i and internal id %i>" %\
