@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
-from .game import GUESS_CLOSE, GUESS_CORRECT, GUESS_INCORRECT, ROUND_END, ROUND_LIVE
+from .game import GameConstants
 
 import os
 from app.models import User
@@ -83,9 +83,10 @@ def join_lobby(message):
 @socketio.on('chat_message')
 def chat_message(message):
     gameobj = backend.get_game(message["room"])
-    if gameobj.state == ROUND_LIVE or gameobj.state == ROUND_END:
+    if gameobj.state == GameConstants.ROUND_LIVE or gameobj.state == GameConstants.ROUND_END:
         result = gameobj.check_guess(message["username"], message["message"])
-        if result == GUESS_CORRECT or result == GUESS_CLOSE:
+        print(result)
+        if result == GameConstants.GUESS_CORRECT or result == GameConstants.GUESS_CLOSE:
             emit('guess_result', {'result': result, 'username': message["username"]}, room=message["room"])
         else:
             emit('chat_message', message, room=message["room"])
