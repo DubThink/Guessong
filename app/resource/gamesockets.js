@@ -33,12 +33,6 @@ $(document).ready(function() {
     });
 
     socket.on('redirect', function(event){
-        /*console.log("hello from redirect pre-replace");
-        window.stop(); //supposed to stop the window from redirecting
-        location.replace("index"); //supposed to redirect ?? back to the index page - i only put this here to see if it would work or not
-        document.getElementById("#createValidation").innerHTML = "trying to join a room that doesn't exist!!";
-        //changes the html right below the form entry to output error message
-        console.log("hello from redirect post-replace");*/
         window.location.replace("/index/" + event["error_type"]);
     });
 
@@ -71,11 +65,20 @@ $(document).ready(function() {
         update_scoreboard();
     });
     socket.on('guess_result', function(msg){
-        $('#chat_output').append("GUESS RESULT: " + msg);
-        if(msg == "correct"){
-            $('#thumb').attr("src", thumb_url);
+        var who = ""
+
+        if(msg["username"] == username) {
+            who = "Your"
+            if (msg == "correct") {
+                $('#thumb').attr("src", thumb_url);
+            }
         }
+        else{
+            who = msg["username"] + "\'s";
+        }
+        $('#chat_output').append(who + " guess was " + msg["result"] + "!<br/>");
     });
+    socket.on('guess_no')
     $('button#chat_submit').click(function(event) {
         console.log(username + ", " + room);
         socket.emit('chat_message', {username: username, message: $('#chat_input').val(), room: room});
