@@ -78,7 +78,7 @@ def join_lobby(message):
     else:
         join_room(message['room'])
         print('joined ' + message['room'])
-        emit('join_message', message['name'] + 'has joined the room', room=message['room'])
+        emit('join_message', message['name'] + ' has joined the room', room=message['room'])
 
 @socketio.on('chat_message')
 def chat_message(message):

@@ -6,7 +6,7 @@ def create_lobby():
 
 def join_lobby(room, username):
     game = app.gameManager.get_game(room)
-    if  game == None:
+    if game == None:
         print("No room")
         return None
     else:

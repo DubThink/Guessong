@@ -103,7 +103,7 @@ class AddPlaylist(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('spotifyid', type=str, required=True, help='spotify playlist URI')
         parser.add_argument('name', type=str, required=True, help='name for playlist')
-        parser.add_argument('auth', type=str, required=True, help='auth token defined in .env')
+        parser.add_argument('auth', type=str, required=True, help='auth token defined in ..env')
         args = parser.parse_args()
         args['spotifyid']=args['spotifyid'].split(':')[-1]
         if args['auth']!=Config.PLAYLIST_API_SECRET:
