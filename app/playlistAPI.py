@@ -1,9 +1,9 @@
 from flask_restful import Resource, Api
 from app import spotifyapi, db
-from app.models import Song,Playlist
+from app.models import Song,Playlist,playlist_song
 import requests
-import time
 import json
+import os
 from flask_restful import reqparse
 from app import Config
 import time
@@ -145,3 +145,96 @@ class ListPlaylists(Resource):
     def get(self):
         return [p.toJSON() for p in Playlist.query.all()]
 
+
+def dump_playlist(id,fname):
+    if Playlist.query.filter_by(id=id).first() is None:
+        return False
+    playlist=Playlist.query.filter_by(id=id).first()
+    try:
+        with open(fname+".playlist",'w') as f:
+            data = playlist.toJSON()
+            data['songs'] = [s.toJSON() for s in playlist.songs]
+            json.dump(data,f)
+            print('writing to '+f.name,'path',os.getcwd())
+        return True
+    except IOError as e:
+        return False
+
+
+def load_playlist(fname):
+    try:
+        with open(fname+".playlist") as f:
+            playlist = Playlist()
+            data=json.load(f)
+            playlist.name=data['name']
+            playlist.thumbnail=data['thumbnail']
+            db.session.add(playlist)
+            db.session.commit()
+            for s in data['songs']:
+                song_obj = Song.query.filter_by(itunes_resource_id=s['itunes_resource_id']).first()
+                if song_obj is None:
+                    song_obj = Song()
+                    song_obj.name = s['name']
+                    song_obj.artist = s['artist']
+                    song_obj.album = s['album']
+                    song_obj.thumbnail_url = s['thumbnail_url']
+                    song_obj.preview_url = s['preview_url']
+                    song_obj.external_url = s['external_url']
+                    song_obj.itunes_resource_id = s['itunes_resource_id']
+                    db.session.add(song_obj)
+                    db.session.commit()
+                playlist.songs.append(song_obj)
+                db.session.commit()
+            return True
+    except IOError as e:
+        return False
+
+    return False
+
+
+class ManageDatabase(Resource):
+    def get(self):
+        if os.environ.get('FLASK_DEBUG') != '1' or os.environ.get('FLASK_ENV') != 'development':
+            return {'message': "server must be in dev mode to manage db (FLASK_DEBUG=1,FLASK_ENV='development",
+                    'FLASK_DEBUG':os.environ.get('FLASK_DEBUG'),
+                    'FLASK_ENV':os.environ.get('FLASK_ENV')}
+        parser = reqparse.RequestParser()
+        parser.add_argument('playlist', type=int, help='playlist id')
+        parser.add_argument('filename', type=str, help='file name with no extension')
+        parser.add_argument('command', type=str, help='load, dump')
+        parser.add_argument('auth', type=str, required=True, help='auth token defined in .env')
+        args = parser.parse_args()
+
+        if args['auth'] != Config.PLAYLIST_API_SECRET:
+            return {"message": "unauthorized"}, 401
+
+        if args['playlist'] is not None and args['filename'] is not None and args['command']=="dump":
+            out=dump_playlist(args['playlist'],args['filename'])
+            return {'success':out}
+
+        if args['filename'] is not None and args['command'] == "load":
+            out=load_playlist(args['filename'])
+            return {'success':out}
+
+        return {'message':'invalid command','args':args}
+
+
+class ResetDatabase(Resource):
+    def get(self):
+        if os.environ.get('FLASK_DEBUG') != '1' or os.environ.get('FLASK_ENV') != 'development':
+            return {'message': "server must be in dev mode to manage db (FLASK_DEBUG=1,FLASK_ENV='development",
+                    'FLASK_DEBUG': os.environ.get('FLASK_DEBUG'),
+                    'FLASK_ENV': os.environ.get('FLASK_ENV')}
+        parser = reqparse.RequestParser()
+        parser.add_argument('auth', type=str, required=True, help='auth token defined in .env')
+        args = parser.parse_args()
+        if args['auth'] != Config.PLAYLIST_API_SECRET:
+            return {"message": "unauthorized"}, 401
+        for playlist in Playlist.query.all():
+            playlist.songs=[]
+            db.session.commit()
+        Playlist.query.delete()
+        Song.query.delete()
+        db.session.commit()
+        load_playlist('default')
+        return {'message': 'THE DEED IS DONE'}

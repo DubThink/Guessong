@@ -29,14 +29,15 @@ class GameUser:
         self.hasGuessedCorrectly = True
 
 
-GUESS_INCORRECT = 'incorrect'
-GUESS_CLOSE = 'close'
-GUESS_CORRECT = 'correct'
+class GameConstants:
+    GUESS_INCORRECT = 'incorrect'
+    GUESS_CLOSE = 'close'
+    GUESS_CORRECT = 'correct'
 
-WAITING=0
-ROUND_LIVE=1
-ROUND_END=2
-GAME_END=3
+    WAITING=0
+    ROUND_LIVE=1
+    ROUND_END=2
+    GAME_END=3
 
 
 class Game:
@@ -54,7 +55,7 @@ class Game:
 
         # game state data
         self.startTime = 0
-        self.state = WAITING
+        self.state = GameConstants.WAITING
 
     def debug_game_state(self):
         """
@@ -87,23 +88,23 @@ class Game:
 
     def _end_game(self):
         """ Sets the game to an end-game state """
-        self.state = GAME_END
+        self.state = GameConstants.GAME_END
         return True
 
     def check_guess(self, username, guess):
         """ Returns GUESS_CORRECT, GUESS_CLOSE, or GUESS_INCORRECT depending on the guess.
         Returns GUESS_INCORRECT if the specified user does not exist """
         if username not in self.gameUsers:
-            return GUESS_INCORRECT
+            return GameConstants.GUESS_INCORRECT
         if self.currentSong is None:
             return 0
         sim = similar(guess,self.currentSong.name)>0.9
         if sim > 0.95:
             self.gameUsers[username].add_score(int(time.time() - self.startTime))
-            return GUESS_CORRECT
+            return GameConstants.GUESS_CORRECT
         if sim > 0.80:
-            return GUESS_CLOSE
-        return GUESS_INCORRECT
+            return GameConstants.GUESS_CLOSE
+        return GameConstants.GUESS_INCORRECT
 
     def get_song_info(self):
         """ Gets current song object as a dict/json """
@@ -125,7 +126,7 @@ class Game:
 
     def start_round(self):
         print("started round")
-        self.state=ROUND_LIVE
+        self.state=GameConstants.ROUND_LIVE
         self.startTime = time.time()
 
         for key, gameUser in self.gameUsers.items():
@@ -140,7 +141,7 @@ class Game:
         print("new song:",self.currentSong)
 
     def finish_round(self):
-        self.state=ROUND_END
+        self.state=GameConstants.ROUND_END
         if len(self.playedSongs)>=self.max_songs:
             return True
         self.startTime = time.time()
@@ -201,13 +202,13 @@ class GameManager:
             threading.Timer(1, self._update_tick).start()
         print('ticking...')
         for roomcode, game in self.roomToGame.items():
-            if game.state is ROUND_LIVE and time.time()-game.startTime > 10:
+            if game.state is GameConstants.ROUND_LIVE and time.time()-game.startTime > 10:
                 killgame = game.finish_round()
                 if killgame:
                     self.end_game(game.roomID)
                 if self.updateClients:
                     self.updateClients(roomcode, game)
-            elif game.state is ROUND_END and time.time()-game.startTime > 6:
+            elif game.state is GameConstants.ROUND_END and time.time()-game.startTime > 6:
                 game.start_round()
                 if self.updateClients:
                     self.updateClients(roomcode, game)
