@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% if current_user.is_authenticated %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% endif %}
+    <h3>you are trying to enter a room that doesn't exist!</h3>
+    <div style="padding-top: 10rem"/>
+{% endblock %}

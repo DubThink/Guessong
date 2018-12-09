@@ -1,35 +1,77 @@
-
-
-
-
-
-/*
 body {
-
-    background-color: #EFEAE8;
+    background-color: #C0EDE6;
     color: #000000;
 }
 
-a:link {
-    color: #403847;
-    text-decoration: none;
+#navbar{
+    background-color: #403847;
 }
 
-a:hover {
-    color: lightcyan;
-    text-decoration: underline;
+.join_div{
+    text-align: center;
 }
 
-a:visited {
-    color: mediumpurple;
-    text-decoration: none;
+.create_div{
+    text-align: center;
 }
 
-a:active {
-    color: lightcoral;
-    text-decoration: underline;
+.logo_base{
+    width: 100px;
+    height: 150px;
+    alignment: bottom;
+
 }
 
+#chat-div{
+    text-align: right;
+    float: right;
+    position: absolute;
+    right: 100px;
+    top: 100px;
+}
+
+#gameplay-div{
+    text-align: left;
+    float:left;
+    left: 90px;
+    top: 100px;
+}
+
+#thumb{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h3{
+    text-transform: lowercase;
+    font-family: Georgia;
+    font-size: 40px;
+}
+
+h4{
+    font-family: Ananda;
+    text-align: center;
+    font-size: 40px;
+}
+
+input[type="text"]{
+    font-family: Georgia;
+    font-size: 20px;
+}
+
+input[type="submit"]{
+    font-family: Georgia;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.footer_class{
+    text-align: center;
+    alignment: bottom;
+}
+
+/*
 input {
     padding:3px;
     border-radius: 6px;
@@ -55,32 +97,25 @@ tr:nth-child(even) {
     background-color: #EFEAE8;
 }
 
-.split{
-    height: 100%;
-    width: 50%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
+a:link {
+    color: #403847;
+    text-decoration: none;
 }
 
-#gameplay-div{
-    left: 0;
-    background-color: #111;
+a:hover {
+    color: lightcyan;
+    text-decoration: underline;
 }
 
-#chat-div{
-    right: 0;
-    background-color: red;
+a:visited {
+    color: mediumpurple;
+    text-decoration: none;
 }
 
-.centered{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-
+a:active {
+    color: lightcoral;
+    text-decoration: underline;
 }
+
+
 */
