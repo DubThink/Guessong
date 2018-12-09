@@ -24,9 +24,11 @@ gameManager.updateClients = backend.update_game_state
 from flask_restful import Resource, Api
 from app import playlistAPI
 restAPI = Api(app)
-restAPI.add_resource(playlistAPI.AddPlaylist, '/playlistapi/addplaylist')
-restAPI.add_resource(playlistAPI.CheckThread, '/playlistapi/checkthread')
-restAPI.add_resource(playlistAPI.ListPlaylists, '/playlistapi/playlists')
+restAPI.add_resource(playlistAPI.AddPlaylist, '/api/addplaylist')
+restAPI.add_resource(playlistAPI.CheckThread, '/api/checkthread')
+restAPI.add_resource(playlistAPI.ListPlaylists, '/api/playlists')
+restAPI.add_resource(playlistAPI.ManageDatabase, '/api/managedb')
+restAPI.add_resource(playlistAPI.ResetDatabase, '/api/resetdb')
 
 from app import routes, models
 

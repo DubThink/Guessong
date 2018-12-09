@@ -52,3 +52,6 @@ microblog.log*
 .idea/*
 
 migrations
+
+*.playlist
+!default.playlist

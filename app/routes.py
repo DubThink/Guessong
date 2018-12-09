@@ -6,6 +6,8 @@ from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
+from .game import GameConstants
+
 import os
 from app.models import User
 from werkzeug.urls import url_parse
@@ -18,8 +20,11 @@ ADMIN_ID = 1
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Sam'}
-    return render_template('index.html', title='Home', user=user)
+    return render_template('index.html', title='Home')
+
+@app.route('/index/<error>')
+def index_err(error):
+    return render_template('index.html', title='Home', error=error)
 
 @app.route('/resource/<path:path>')
 def serve_file(path):
@@ -77,7 +82,17 @@ def join_lobby(message):
 
 @socketio.on('chat_message')
 def chat_message(message):
-   emit('chat_message', message, room=message["room"])
+    gameobj = backend.get_game(message["room"])
+    if gameobj.state == GameConstants.ROUND_LIVE or gameobj.state == GameConstants.ROUND_END:
+        result = gameobj.check_guess(message["username"], message["message"])
+        print(result)
+        if result == GameConstants.GUESS_CORRECT or result == GameConstants.GUESS_CLOSE:
+            emit('guess_result', {'result': result, 'username': message["username"]}, room=message["room"])
+        else:
+            emit('chat_message', message, room=message["room"])
+    else:
+        emit('chat_message', message, room=message["room"])
+
 
 @socketio.on('start_game')
 def start_game(message):
@@ -91,9 +106,4 @@ def data_request(message):
     print(game.get_song_info())
     emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
 
-@socketio.on('song_guess')
-def song_guess(message):
-    game = backend.get_game(message["room"])
-    result = game.check_guess(message["username"], message["guess"])
-    emit('guess_result', result)
 
