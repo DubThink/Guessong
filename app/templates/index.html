@@ -12,7 +12,12 @@
     {% if error == 'name' %}
         <h4 id="error_header">That name has been taken</h4>
     {% endif %}
-    <p id="join_p">
+    </br>
+
+     <div class="join_div">
+        <h3> Join a Game </h3>
+        <p class="about"> join a game with your friends! </br>  enter the room code given to you by the creator of the game, and then your name! </p>
+
         <h3> Join a Game </h3>
         <form id="joining_game" method="POST" action='/join_game'>
             <input type="text" name="room_code" id="room_code" placeholder="Room Code" required>
@@ -20,15 +25,23 @@
             <input type="submit" value="Join Game" id="join">
         </form>
         <p id="createValidation"> </p>
-    </p>
-
-    <p id="create_p">
+     </div>
+    </br>
+    </br>
+    <h4> ~ or ~ </h4>
+    </br>
+    </br>
+    <div class = "create_div">
         <h3> Create a Game </h3>
+        <p class="about"> create a game, then invite your friends to join! </p>
         <form id="creating_game" method="POST" action='/create_game'>
             <input type="text" name="name" id="createGame_name" placeholder="Name" required>
             <input type="submit" value="Create Game" id="create_lobby">
         </form>
         <p id="joinValidation"> </p>
     </p>
+    </div>
+
+     <!-- <img src="../resource/guesssong_logo.png" class="logo_base"> -->
 {% endblock %}
 
