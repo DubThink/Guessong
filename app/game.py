@@ -10,10 +10,17 @@ import random
 * manages the gamestate of guessong
 """
 
+validchars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+
+def clean(s):
+    return ''.join(c for c in s if c in validchars)
 
 def similar(a, b):
     """ :returns the similarity of a and b in the range [0:1] """
-    return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+    fullmatch= SequenceMatcher(None, clean(a.lower()), clean(b.lower())).ratio()
+    # only stuff before parenthesis
+    partmatch= SequenceMatcher(None, clean(a.lower()), clean(b.lower().split('(')[0])).ratio()
+    return max(fullmatch,partmatch)
 
 
 class GameUser:
@@ -52,6 +59,7 @@ class Game:
         self.gameStarted = False
         self.playlistData = None
         self.max_songs = 10
+        self.guess_time=10
 
         # game state data
         self.startTime = 0
@@ -86,7 +94,7 @@ class Game:
         self.gameUsers.pop(username)
         return True
 
-    def _end_game(self):
+    def end_game(self):
         """ Sets the game to an end-game state """
         self.state = GameConstants.GAME_END
         return True
@@ -98,7 +106,7 @@ class Game:
             return GameConstants.GUESS_INCORRECT
         if self.currentSong is None:
             return 0
-        sim = similar(guess,self.currentSong.name)>0.9
+        sim = similar(guess,self.currentSong.name)
         if sim > 0.95:
             self.gameUsers[username].add_score(int(time.time() - self.startTime))
             return GameConstants.GUESS_CORRECT
@@ -133,7 +141,7 @@ class Game:
             gameUser.hasGuessedCorrectly=False
 
         if len(self.unplayedSongs) == 0:
-            self.unplayedSongs = self.playlist.songs
+            self.unplayedSongs = list(self.playlist.songs)
             random.shuffle(self.unplayedSongs)
         if self.currentSong:
             self.playedSongs.append(self.currentSong)
@@ -202,13 +210,13 @@ class GameManager:
             threading.Timer(1, self._update_tick).start()
         print('ticking...')
         for roomcode, game in self.roomToGame.items():
-            if game.state is GameConstants.ROUND_LIVE and time.time()-game.startTime > 10:
+            if game.state is GameConstants.ROUND_LIVE and time.time()-game.startTime > game.guess_time:
                 killgame = game.finish_round()
                 if killgame:
                     self.end_game(game.roomID)
                 if self.updateClients:
                     self.updateClients(roomcode, game)
-            elif game.state is GameConstants.ROUND_END and time.time()-game.startTime > 6:
+            elif game.state is GameConstants.ROUND_END and time.time()-game.startTime > 8:
                 game.start_round()
                 if self.updateClients:
                     self.updateClients(roomcode, game)
