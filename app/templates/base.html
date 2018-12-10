@@ -16,11 +16,12 @@
 
 
 {% block navbar %}
-
+    {#
+<!--
     <div id="navbar">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="/index"> <img src="../resource/guesssong_WHITE_text.png" height="35" width="110" /> </a>
-            <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -69,6 +70,21 @@
       </div>
         </nav>
     </div>
+    -->
+    #}
+
+    <!--
+<header>
+<img src="../resource/guessong_text.png" height="60" width="120" align="center" class="top_image"/>
+</header>
+
+-->
+<nav>
+    <a href="/index" class="navbar_text"> Guessong </a>
+</nav>
+
+    <!-- make responsive sidebars -->
+
 {% endblock %}
 
 {% block content %}
@@ -92,10 +108,15 @@
 {% endblock %}
 
 
+<div class = "left_sidebar"> </div>
+
+
 <footer>
     </br>
     </br>
     <p class="footer_class"> Guessong © 2018 </p>
 </footer>
+
+<div class = "right_sidebar"> </div>
 
 </html>
