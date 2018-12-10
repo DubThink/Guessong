@@ -146,6 +146,10 @@ class ListPlaylists(Resource):
         return [p.toJSON() for p in Playlist.query.all()]
 
 
+def get_all_playlists_meta():
+    return [p.toJSON() for p in Playlist.query.all()]
+
+
 def dump_playlist(id,fname):
     if Playlist.query.filter_by(id=id).first() is None:
         return False
