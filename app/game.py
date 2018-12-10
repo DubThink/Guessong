@@ -102,6 +102,8 @@ class Game:
     def check_guess(self, username, guess):
         """ Returns GUESS_CORRECT, GUESS_CLOSE, or GUESS_INCORRECT depending on the guess.
         Returns GUESS_INCORRECT if the specified user does not exist """
+        if self.state!=GameConstants.ROUND_LIVE:
+            return GameConstants.GUESS_INCORRECT
         if username not in self.gameUsers:
             return GameConstants.GUESS_INCORRECT
         if self.currentSong is None:
