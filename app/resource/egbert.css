@@ -20,6 +20,11 @@ body {
     border-color: #FF6854;
 }
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
 .btn-primary{
     background-color: #FF6854;
 }
