@@ -87,6 +87,7 @@
 
 {% endblock %}
 
+<div id="page">
 {% block content %}
     <div class="container" style="padding-top: 15px">
         {% with messages = get_flashed_messages() %}
@@ -97,8 +98,6 @@
         {% endif %}
         {% endwith %}
 
-
-
         {# application content needs to be provided in the app_content block #}
         {% block app_content %}{% endblock %}
 
@@ -106,17 +105,14 @@
 
     </div>
 {% endblock %}
+</div>
+    <footer>
+        </br>
+        </br>
+        <p class="footer_class"> Guessong © 2018 </p>
+    </footer>
 
 
-<div class = "left_sidebar"> </div>
 
-
-<footer>
-    </br>
-    </br>
-    <p class="footer_class"> Guessong © 2018 </p>
-</footer>
-
-<div class = "right_sidebar"> </div>
 
 </html>

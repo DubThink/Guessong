@@ -1,11 +1,19 @@
 body {
-    background-color: #C0EDE6;
+    background-color: #ffffff;
     color: #000000;
     margin-left: 200px;
     margin-right: 200px;
-    padding: 1px;
+    padding: 0px;
     height: 100%;
 }
+
+@media screen and (max-width: 900px){
+    body{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+
 
 a:link {
     text-decoration: none;
@@ -44,32 +52,9 @@ nav a{
 }
 
 
-/*  ~~~~~~ SIDEBARS ~~~~~~  */
-
-.left_sidebar{
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #ffffff;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
+#page{
+    background-color: #C0EDE6;
 }
-
-.right_sidebar{
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #ffffff;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-}
-
-
-
-
-
 
 
 #chat-div{
@@ -92,9 +77,6 @@ nav a{
     margin-left: auto;
     margin-right: auto;
 }
-
-
-
 
 
 h3{

@@ -19,6 +19,7 @@ $(document).ready(function() {
         console.log("connected");
         urldata = urlData();
         username = urldata["name"];
+        username = decodeURIComponent(username);
         room = urldata["room"];
         if(urldata["create"] == "True"){
             socket.emit('create_lobby', {name: username})
