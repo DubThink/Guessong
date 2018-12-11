@@ -4,6 +4,7 @@ $(document).ready(function() {
     var username = "";
     var room = "";
     var game_started = false;
+    var round_over = false;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     var thumb_url = "";
     var playlists;
@@ -13,6 +14,7 @@ $(document).ready(function() {
     audio_player.preLoad=false;
     var users;
     var is_creator = false;
+    var played_songs = Array();
     socket.on('connect', function() {
         console.log("connected");
         urldata = urlData();
@@ -40,7 +42,7 @@ $(document).ready(function() {
     });
     socket.on('room_code', function(msg) {
         console.log(msg["room"]);
-        $('.room_code').val("Room Code: " + msg["room"]);
+        $('.room_code').val(msg["room"]);
         room = msg["room"];
     });
     socket.on('join_message', function(msg) {
@@ -59,15 +61,22 @@ $(document).ready(function() {
             audio_player.load();
             audio_player.play();
             $('#thumb').hide();
+            round_over = false;
         }
         thumb_url = msg["song"]["thumbnail_url"];
         users=msg["users"];
         update_scoreboard();
     });
     socket.on('round_end', function(msg) {
-       audio_player.pause();
-       $('#thumb').attr("src", thumb_url);
-       $('#thumb').show();
+        if(!round_over) {
+            audio_player.pause();
+            played_songs[played_songs.length] = {name: msg["name"], thumb: thumb_url, link: msg["external_url"]};
+            console.log(played_songs);
+            $('#thumb').attr("src", thumb_url);
+            $('#thumb').show();
+            update_song_list();
+        }
+       round_over = true;
     });
     socket.on('game_end', function(msg) {
         if (is_creator){
@@ -123,11 +132,20 @@ $(document).ready(function() {
         socket.emit("data_request", {username: username, room: room});
     }
     function update_scoreboard(){
-        $('div#scoreboard').empty();
-        console.log(users);
+        $('#score_body').empty();
         for (let user of users) {
-            console.log(user);
-            $('div#scoreboard').append( $("<div>" + user["name"] + ": " + user["score"] + "</div>"));
+            $('#score_body').append( $("<tr><th scope=\"row\">" + user["name"] + "</th><td>" + user["score"] + "</td></tr>"));
+        }
+    }
+    function update_song_list(){
+        $('#history_body').empty();
+        var length = played_songs.length < 3 ? played_songs.length : 3;
+        for(var count = 0; count < length; count++) {
+            song = played_songs[played_songs.length - count - 1];
+            $('#history_body').append( $("<tr><th scope=\"row\"><img class=\"history_thumb\" src=\"" +
+                song["thumb"] + "\"/></th><td>" +
+                song["name"] + "<br/><a target=\"_blank\" href=\"" +
+                song["link"] + "\">Get on iTunes</a></td></tr>"));
         }
     }
 });
