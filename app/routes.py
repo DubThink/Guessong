@@ -105,7 +105,9 @@ def start_game(message):
 @socketio.on('data_request')
 def data_request(message):
     game = backend.get_game(message["room"])
-    if game.state == GameConstants.ROUND_LIVE:
+    if game is None:
+        emit("game_end", room=message["room"])
+    elif game.state == GameConstants.ROUND_LIVE:
         print(game.get_song_info())
         emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
     elif game.state == GameConstants.ROUND_END:

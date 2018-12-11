@@ -55,25 +55,29 @@ body {
     background-color: #B73d2d;
 }
 
-
 a:link {
     text-decoration: none;
 }
+
+
 
 /*  ~~~~~~ NAVBAR ~~~~~~  */
 
 nav{
     width: 100%;
     height: 100px;
-    font-family: Ananda;
+    font-family: parkside, cursive;
+    font-weight: 200;
+    font-style: normal;
     text-align: center;
-    font-size: 55px;
+    font-size: 100px;
     background-color: #444;
+    line-height: 70px;
     margin: 0 auto;
 }
 
 nav a:hover{
-    color: #ffffff;
+    color: #FF6854;
 }
 
 nav a{
@@ -122,16 +126,14 @@ nav a{
 
 h3{
     text-transform: lowercase;
-    font-family: Georgia;
+    font-family: Georgia, serif;
     font-size: 32px;
     text-align: center;
 }
 
 h4{
-    font-family: Ananda;
     text-align: center;
     font-size: 40px;
-    text-align: center;
 }
 
 .centered{
