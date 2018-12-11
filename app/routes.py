@@ -6,6 +6,7 @@ from flask_socketio import SocketIO, emit, join_room, send
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
+from app.playlistAPI import get_all_playlists_meta
 from .game import GameConstants
 
 import os
@@ -66,6 +67,7 @@ def create_lobby(message):
    else:
        join_room(room)
        emit('room_code', {'room': room})
+       emit('playlists', get_all_playlists_meta(), room=room)
 
 #Expects message to contain name and room
 @socketio.on('join_lobby')
@@ -79,6 +81,7 @@ def join_lobby(message):
         join_room(message['room'])
         print('joined ' + message['room'])
         emit('join_message', message['name'] + ' has joined the room', room=message['room'])
+        emit('playlists', get_all_playlists_meta(), room=message['room'])
 
 @socketio.on('chat_message')
 def chat_message(message):
@@ -102,8 +105,13 @@ def start_game(message):
 @socketio.on('data_request')
 def data_request(message):
     game = backend.get_game(message["room"])
-    #  print("info:", end=" ")
-    # print(game.get_song_info())
-    emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
+    if game.state == GameConstants.ROUND_LIVE:
+        print(game.get_song_info())
+        emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
+    elif game.state == GameConstants.ROUND_END:
+        emit("round_end", room=message["room"])
+    elif game.state == GameConstants.GAME_END:
+        emit("game_end", room=message["room"])
+
 
 

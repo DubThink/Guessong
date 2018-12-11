@@ -6,15 +6,13 @@ $(document).ready(function() {
     var game_started = false;
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     var thumb_url = "";
-    //var audio = $("#audio");
-        //$("#audio_src").attr("src", 'https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a');
-        var audio_player = document.createElement("audio");
-        //audio_player.src="http://funksyou.com/fileDownload/Songs/0/30828.mp3";
-        //audio_player.src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview118/v4/ea/82/07/ea8207c8-d2ab-1d08-4658-13b8df263bd5/mzaf_2704060614543532885.plus.aac.p.m4a";
-        audio_player.volume=0.10;
-        audio_player.autoPlay=false;
-        audio_player.preLoad=false;
+    var playlists;
+    var audio_player = document.createElement("audio");
+    audio_player.volume=0.10;
+    audio_player.autoPlay=false;
+    audio_player.preLoad=false;
     var users;
+    var is_creator = false;
     socket.on('connect', function() {
         console.log("connected");
         urldata = urlData();
@@ -24,6 +22,7 @@ $(document).ready(function() {
         if(urldata["create"] == "True"){
             socket.emit('create_lobby', {name: username})
             $('#guess_song').hide();
+            is_creator = true;
         }
         else {
             socket.emit('join_lobby', {name: username, room: room})
@@ -32,7 +31,6 @@ $(document).ready(function() {
             $('#create_game').hide();
         }
     });
-
     socket.on('redirect', function(event){
         window.location.replace("/index/" + event["error_type"]);
     });
@@ -50,28 +48,38 @@ $(document).ready(function() {
     socket.on('game_started', function(msg) {
        game_started = true;
        $('#create_game').hide();
-       $('#guess_song').show();
        setInterval(request_game_data, 500);
     });
     socket.on('update_game', function(msg) {
-        console.log(msg);
-        console.log(msg["song"]["preview_url"]);
         if(audio_player.src != msg["song"]["preview_url"]) {
             audio_player.src = msg["song"]["preview_url"];
             audio_player.load();
             audio_player.play();
+            $('#thumb').hide();
         }
         thumb_url = msg["song"]["thumbnail_url"];
         users=msg["users"];
         update_scoreboard();
     });
+    socket.on('round_end', function(msg) {
+       audio_player.pause();
+       $('#thumb').attr("src", thumb_url);
+       $('#thumb').show();
+    });
+    socket.on('game_end', function(msg) {
+        if (is_creator){
+            $('#create_game').show();
+        }
+        game_started = false;
+    });
     socket.on('guess_result', function(msg){
         var who = ""
-
+        console.log(msg);
         if(msg["username"] == username) {
             who = "Your"
-            if (msg == "correct") {
+            if (msg["result"] == "correct") {
                 $('#thumb').attr("src", thumb_url);
+                $('#thumb').show();
             }
         }
         else{
@@ -79,7 +87,12 @@ $(document).ready(function() {
         }
         $('#chat_output').append(who + " guess was " + msg["result"] + "!<br/>");
     });
-    socket.on('guess_no')
+    socket.on('playlists', function(msg){
+        playlists = msg;
+        for (let playlist of playlists){
+            $('#playlist').append("<option value=" + playlist["id"]+">"+playlist["name"]+"</option>");
+        }
+    });
     $('button#chat_submit').click(function(event) {
         console.log(username + ", " + room);
         socket.emit('chat_message', {username: username, message: $('#chat_input').val(), room: room});
@@ -123,6 +136,3 @@ function urlData() {
             name : spliturl[1],
             room : spliturl[2]};
 }
-
-
-

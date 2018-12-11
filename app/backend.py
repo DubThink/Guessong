@@ -14,7 +14,8 @@ def join_lobby(room, username):
 
 def start_game(room, name, playlist, song_length):
     game = app.gameManager.get_game(room)
-    game.set_playlist(2)
+    game.set_playlist(int(playlist))
+    game.guess_time = int(song_length)
     app.gameManager.start_game(room)
 
 def get_game(room):
