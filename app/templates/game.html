@@ -5,28 +5,10 @@
     <script type='text/javascript' src='../resource/gamesockets.js'></script>
 
     <div class="row mx-auto">
-    <div class="col-md-4">
+    <div class="col-md-4" id="create_col">
         <form class="pure-form" id="create_game"> <!-- section to create game -->
             <label class=" pure-input-1 centered" for="room_code"><b>ROOM CODE</b></label>
-            <input class="dark-form dark-textarea pure-input-1 centered" type="text" id="room_code" placeholder="Readonly input here…" readonly>
-{#                <label for="room_name">Room Name</label>#}
-{#                <input type='text' class="form-control" id='room_name'>#}
-
-{#                <div class="form-check">#}
-{#                    <input class="form-check-input" type="radio" name="room_type" id="private"#}
-{#                           value="option1" checked>#}
-{#                    <label class="form-check-label" for="private">#}
-{#                        Private#}
-{#                    </label>#}
-{#                </div>#}
-{#                <div class="form-check">#}
-{#                    <input class="form-check-input" type="radio" name="room_type" id="public"#}
-{#                           value="option2">#}
-{#                    <label class="form-check-label" for="public">#}
-{#                        Public (visible on homepage)#}
-{#                    </label>#}
-{#                </div>#}
-
+            <input class="dark-form dark-textarea pure-input-1 centered room_code" type="text"  placeholder="Readonly input here…" readonly>
                 <label class="pure-input-1" for="song_length">Time to guess: <value id="time_value">3</value> seconds </label>
                 <input class="dark-form pure-input-1 slider" type='range' min='10' max='30' id='song_length'>
                 <label class="pure-input-1" for="playlist">Playlist</label>
@@ -37,10 +19,10 @@
             </form>
     </div>
 {#    GAMEPLAy LEFT    #}
-        <div class="col-md-4">
+        <div class="col-md-4" id="game_col">
                <form class="pure-form" id="create_game"> <!-- section to create game -->
             <label class=" pure-input-1 centered" for="room_code"><b>ROOM CODE</b></label>
-            <input class="dark-form dark-textarea pure-input-1 centered" type="text" id="room_code" placeholder="Readonly input here…" readonly>
+            <input class="dark-form dark-textarea pure-input-1 centered room_code" type="text" placeholder="Readonly input here…" readonly>
         </form>
         <table class="table table-dark">
           <thead>
@@ -50,23 +32,18 @@
             </tr>
           </thead>
           <tbody id="score_body">
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-            </tr>
+
           </tbody>
         </table>
         <table class="table table-dark">
          <thead>
             <tr>
-              <th scope="col">thumb</th>
-              <th scope="col">Name</th>
+              <th scope="col">Played songs:</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody id="history_body">
             <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
             </tr>
           </tbody>
         </table>
@@ -78,9 +55,8 @@
         <h3 id="song_artist">Earth, Wind and Fire</h3>
         <br>
         <h3 id="album">adfasdfasdfasdfasfdasdf</h3>
-        <a id="itunes-link" href="">View on iTunes</a>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" id="chat-col">
         <form class="pure-form" id="chat" action='#'>
             <fieldset class="pure-group">
                <textarea class="dark-textarea dark-form pure-input-1" style="resize: none;" id="chat_output" rows="15" readonly></textarea>
