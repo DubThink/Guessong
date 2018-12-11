@@ -167,7 +167,6 @@ nav a{
     margin-right: auto;
 }
 
-
 h3{
     text-transform: lowercase;
     font-family: Georgia, serif;
@@ -262,3 +261,12 @@ a:active {
 
 
 */
+
+.alert, alert-danger{
+    background-color: #FF6854;
+    border: none;
+    color: #ffffff;
+    margin-left: 100px;
+    margin-right: 100px;
+    text-align: center;
+}

@@ -5,12 +5,20 @@
     <h1>Hi, {{ current_user.username }}!</h1>
     {% endif %}
 
+
     {% if error == 'room' %}
-        <h4 id="error_header">Room does not exist</h4>
+        <div class="alert alert-danger" role="alert">
+            That room doesn't exist!
+        </div>
     {% endif %}
+
     {% if error == 'name' %}
-        <h4 id="error_header">That name has been taken</h4>
+        <div class="alert alert-danger" role="alert">
+            That name is already taken!
+        </div>
     {% endif %}
+
+
     </br>
 
      <div class="join_div">

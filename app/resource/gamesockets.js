@@ -56,6 +56,7 @@ $(document).ready(function() {
        setInterval(request_game_data, 500);
     });
     socket.on('update_game', function(msg) {
+        console.log(msg["name"]);
         if(audio_player.src != msg["song"]["preview_url"]) {
             audio_player.src = msg["song"]["preview_url"];
             audio_player.load();
