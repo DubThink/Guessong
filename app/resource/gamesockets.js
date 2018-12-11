@@ -26,8 +26,9 @@ $(document).ready(function() {
         }
         else {
             socket.emit('join_lobby', {name: username, room: room})
-            $('#room_code').text("Room Code: " + room);
-            $('#create_game').hide();
+            $('.room_code').val("Room Code: " + room);
+            $('#create_col').hide();
+            $('.table').hide();
         }
     });
     socket.on('redirect', function(event){
@@ -35,19 +36,21 @@ $(document).ready(function() {
     });
 
     socket.on('chat_message', function(msg) {
-        $('#chat_output').append( msg["username"] + ":" + msg["message"] + "<br/>");
+        $('#chat_output').append( msg["username"] + ":" + msg["message"] + "\n");
     });
     socket.on('room_code', function(msg) {
-        $('#room_code').text("Room Code: " + msg["room"]);
+        console.log(msg["room"]);
+        $('.room_code').val("Room Code: " + msg["room"]);
         room = msg["room"];
     });
     socket.on('join_message', function(msg) {
-        $('#chat_output').append("ATTENTION " + msg + "<br/>");
+        $('#chat_output').append("ATTENTION " + msg + "\n");
     });
     socket.on('game_started', function(msg) {
        game_started = true;
        $('#create_col').hide();
        $('#game_col').show();
+       $('.table').show();
        setInterval(request_game_data, 500);
     });
     socket.on('update_game', function(msg) {
@@ -85,7 +88,7 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-        $('#chat_output').append(who + " guess was " + msg["result"] + "!<br/>");
+        $('#chat_output').append(who + " guess was " + msg["result"] + "!\n");
     });
     socket.on('playlists', function(msg){
         playlists = msg;
