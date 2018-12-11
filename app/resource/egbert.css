@@ -184,6 +184,18 @@ h4{
     width: 100%;
 }
 
+#song_artist{
+    text-align:center;
+}
+
+#song_name{
+    text-align:center;
+}
+
+#album{
+    text-align:center;
+}
+
 /*input[type="text"]{*/
     /*font-family: Georgia;*/
     /*font-size: 20px;*/
