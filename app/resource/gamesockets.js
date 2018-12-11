@@ -15,6 +15,7 @@ $(document).ready(function() {
     var users;
     var is_creator = false;
     var played_songs = Array();
+    $("#song_info").hide();
     socket.on('connect', function() {
         console.log("connected");
         urldata = urlData();
@@ -60,8 +61,10 @@ $(document).ready(function() {
             audio_player.src = msg["song"]["preview_url"];
             audio_player.load();
             audio_player.play();
-            $('#thumb').hide();
             round_over = false;
+            $('#thumb').attr("src", "/resource/placeholder.png");
+            $('#thumb').removeClass("stopspin");
+            $("#song_info").hide();
         }
         thumb_url = msg["song"]["thumbnail_url"];
         users=msg["users"];
@@ -70,11 +73,19 @@ $(document).ready(function() {
     socket.on('round_end', function(msg) {
         if(!round_over) {
             audio_player.pause();
-            played_songs[played_songs.length] = {name: msg["name"], thumb: thumb_url, link: msg["external_url"]};
+            played_songs[played_songs.length] = {name: msg["name"],
+                thumb: thumb_url,
+                link: msg["external_url"]};
             console.log(played_songs);
             $('#thumb').attr("src", thumb_url);
             $('#thumb').show();
             update_song_list();
+            $('#thumb').addClass("stopspin");
+
+            $("#song_info").show();
+            $("h2#song_name").text(msg["name"]);
+            $("h3#song_artist").text(msg["artist"]);
+            $("h3#album").text(msg["album"]);
         }
        round_over = true;
     });
