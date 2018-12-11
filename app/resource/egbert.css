@@ -20,17 +20,41 @@ body {
     border-color: #FF6854;
 }
 
+.dark-textarea{
+    background-color:#444!important;
+    color: #EEE!important;;
+}
+.dark-form,.dark-form[readonly]{
+    background-color:#444;
+    color: #EEE;
+    box-shadow: none!important;
+    border-color: #FF6854!important;
+}
+
 .col-centered{
     float: none;
     margin: 0 auto;
 }
 
+.table-dark{
+    background-color: #444;
+    /*border: 1px solid #FF6854;*/
+    border-radius: 4px;
+    /*box-shadow: none!important;*/
+}
 .btn-primary{
     background-color: #FF6854;
 }
 .btn-primary:hover{
     background-color: #B73d2d;
 }
+.pure-button-primary{
+    background-color: #FF6854;
+}
+.pure-button-primary:hover{
+    background-color: #B73d2d;
+}
+
 
 a:link {
     text-decoration: none;

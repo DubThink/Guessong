@@ -6,12 +6,9 @@
 
     <div class="row mx-auto">
     <div class="col-md-4">
-        <form id="create_game"> <!-- section to create game -->
-           <div class="form-group">
-               <label for="room_code" class="centered"><b>ROOM CODE</b></label>
-                <input class="form-control centered" type="text" id="room_code" placeholder="Readonly input here…" readonly>
-            </div>
-            <div class="form-group">
+        <form class="pure-form" id="create_game"> <!-- section to create game -->
+            <label class=" pure-input-1 centered" for="room_code"><b>ROOM CODE</b></label>
+            <input class="dark-form dark-textarea pure-input-1 centered" type="text" id="room_code" placeholder="Readonly input here…" readonly>
 {#                <label for="room_name">Room Name</label>#}
 {#                <input type='text' class="form-control" id='room_name'>#}
 
@@ -30,23 +27,20 @@
 {#                    </label>#}
 {#                </div>#}
 
-                <label for="song_length">Time to guess: <value id="time_value">3</value> seconds </label>
-                <input type='range' class="form-control-range" min='10' max='30' class='slider' id='song_length'>
-                <label for="playlist">Playlist</label>
-                <select id='playlist' class="form-control"></select>
-            </div>
-            <div class="form-group">
-                <button type='button' class="form-control btn-primary" id='start'>Start Game</button>
-            </div>
+                <label class="pure-input-1" for="song_length">Time to guess: <value id="time_value">3</value> seconds </label>
+                <input class="dark-form pure-input-1 slider" type='range' min='10' max='30' id='song_length'>
+                <label class="pure-input-1" for="playlist">Playlist</label>
+                <select class="dark-form dark-textarea pure-input-1" id='playlist' style="height:  calc(3.0rem + 2px);"></select>
+            <br>
+            <br>
+                <button type='button' class="dark-form pure-button pure-input-1 pure-button-primary" id='start'>Start Game</button>
             </form>
     </div>
 {#    GAMEPLAy LEFT    #}
         <div class="col-md-4">
-        <form id="create_game"> <!-- section to create game -->
-           <div class="form-group">
-               <label for="room_code" class="centered"><b>ROOM CODE</b></label>
-                <input class="form-control centered" type="text" id="room_code" placeholder="Readonly input here…" readonly>
-            </div>
+               <form class="pure-form" id="create_game"> <!-- section to create game -->
+            <label class=" pure-input-1 centered" for="room_code"><b>ROOM CODE</b></label>
+            <input class="dark-form dark-textarea pure-input-1 centered" type="text" id="room_code" placeholder="Readonly input here…" readonly>
         </form>
         <table class="table table-dark">
           <thead>
@@ -87,12 +81,13 @@
         <a id="itunes-link" href="">View on iTunes</a>
     </div>
     <div class="col-md-4">
-        <form id="chat" action='#'>
-           <div class="form-group">
-           <textarea class="form-control" style="resize: none;" id="chat_output" rows="15" readonly></textarea>
-           <input type='text' class="form-control" id='chat_input' autocomplete="off">
-           </div>
-            <button class="form-control btn-primary" id="chat_submit">Chat</button>
+        <form class="pure-form" id="chat" action='#'>
+            <fieldset class="pure-group">
+               <textarea class="dark-textarea dark-form pure-input-1" style="resize: none;" id="chat_output" rows="15" readonly></textarea>
+                <input type="text" class="dark-form pure-input-1" autocomplete="off" id="chat_input" placeholder="Chat" required>
+            </fieldset>
+{#                <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Chat/Guess" id="chat_submit">#}
+                <button class="dark-form pure-button pure-input-1 pure-button-primary" id="chat_submit">Chat</button>
         </form>
     </div>
     </div>

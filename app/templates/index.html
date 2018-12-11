@@ -17,11 +17,13 @@
         <h3> Join a Game </h3>
         <p class="about"> Join a game with your friends! </br>  Enter the room code given to you by the creator of the game, and then your name! </p>
          <div class="col-md-4 col-centered">
-         <form  id="joining_game" method="POST" action='/join_game'>
-            <input class="form-control" type="text" name="room_code" id="room_code" placeholder="Room Code" required>
-            <input class="form-control" type="text" name="name" id="joinGame_name" placeholder="Name" required>
-            <input class="form-control btn-primary" type="submit" value="Join Game" id="join">
-        </form>
+         <form class="pure-form" id="joining_game" method="POST" action='/join_game'>
+            <fieldset class="pure-group">
+                <input type="text" class="dark-form pure-input-1" name="room_code" id="room_code" placeholder="Room Code" required>
+                <input type="text" class="dark-form pure-input-1" name="name" id="joinGame_name" placeholder="Name" required>
+                <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Join Game" id="join">
+            </fieldset>
+         </form>
          </div>
         <p id="createValidation"> </p>
      </div>
@@ -32,10 +34,12 @@
         <h3> Create a Game </h3>
         <p class="about"> Create a game, then invite your friends to join! </p>
         <div class="col-md-4 col-centered">
-        <form  id="creating_game" method="POST" action='/create_game'>
-            <input class="form-control" type="text" name="name" id="createGame_name" placeholder="Name" required>
-            <input class="form-control btn-primary" type="submit" value="Create Game" id="create_lobby">
-        </form>
+            <form class="pure-form" id="creating_game" method="POST" action='/create_game'>
+            <fieldset class="pure-group">
+                <input type="text" class="dark-form pure-input-1" name="name" id="createGame_name" placeholder="Name" required>
+                <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Create Game" id="create_lobby">
+            </fieldset>
+            </form>
         </div>
         <p id="joinValidation"> </p>
     </p>
