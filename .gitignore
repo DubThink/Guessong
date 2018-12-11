@@ -55,3 +55,6 @@ migrations
 
 *.playlist
 !default.playlist
+
+# emacs
+*~

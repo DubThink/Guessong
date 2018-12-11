@@ -1,0 +1,2 @@
+middle-end does not kick out clients connecting to nonexistant rooms and instead creates those rooms
+ - reproduce: restart server with client in-game

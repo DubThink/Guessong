@@ -142,6 +142,8 @@ class Game:
         for key, gameUser in self.gameUsers.items():
             gameUser.hasGuessedCorrectly=False
 
+        if not self.playlist:
+            print("No playlist for room with code",self.roomID,", users",str(self.gameUsers))
         if len(self.unplayedSongs) == 0:
             self.unplayedSongs = list(self.playlist.songs)
             random.shuffle(self.unplayedSongs)
@@ -211,7 +213,7 @@ class GameManager:
         if self.ticking:
             threading.Timer(1, self._update_tick).start()
         print('ticking...')
-        for roomcode, game in self.roomToGame.items():
+        for roomcode, game in list(self.roomToGame.items()):
             if game.state is GameConstants.ROUND_LIVE and time.time()-game.startTime > game.guess_time:
                 killgame = game.finish_round()
                 if killgame:

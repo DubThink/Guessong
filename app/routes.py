@@ -102,8 +102,8 @@ def start_game(message):
 @socketio.on('data_request')
 def data_request(message):
     game = backend.get_game(message["room"])
-    print("info:", end=" ")
-    print(game.get_song_info())
+    #  print("info:", end=" ")
+    # print(game.get_song_info())
     emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
 
 
