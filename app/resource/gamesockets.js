@@ -15,6 +15,7 @@ $(document).ready(function() {
     var users;
     var is_creator = false;
     var played_songs = Array();
+    var textarea = document.getElementById('chat_output');
 
     // I added this, put it where you want it -B
     // resize the thumb/record-disc to be square
@@ -55,6 +56,7 @@ $(document).ready(function() {
 
     socket.on('chat_message', function(msg) {
         $('#chat_output').append( msg["username"] + ":" + msg["message"] + "\n");
+        textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('room_code', function(msg) {
         console.log(msg["room"]);
@@ -63,6 +65,7 @@ $(document).ready(function() {
     });
     socket.on('join_message', function(msg) {
         $('#chat_output').append("ATTENTION " + msg + "\n");
+        textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('game_started', function(msg) {
        game_started = true;
@@ -118,7 +121,6 @@ $(document).ready(function() {
             if (msg["result"] == "correct") {
                 $('#thumb').attr("src", thumb_url);
                 $('#thumb').show();
-                console.log("user guessed correctly!");
                 $("#song_info").show();
                 $("h3#song_name").text(msg["song"]["name"]);
                 $("h3#song_artist").text(msg["song"]["artist"]);
@@ -129,6 +131,7 @@ $(document).ready(function() {
             who = msg["username"] + "\'s";
         }
         $('#chat_output').append(who + " guess was " + msg["result"] + "!\n");
+        textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){
         playlists = msg;
