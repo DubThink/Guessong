@@ -110,7 +110,7 @@ class Game:
             return 0
         sim = similar(guess,self.currentSong.name)
         if sim > 0.95:
-            self.gameUsers[username].add_score(int(time.time() - self.startTime))
+            self.gameUsers[username].add_score(self.guess_time-int(time.time() - self.startTime))
             return GameConstants.GUESS_CORRECT
         if sim > 0.80:
             return GameConstants.GUESS_CLOSE
