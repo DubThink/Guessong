@@ -15,6 +15,21 @@ $(document).ready(function() {
     var users;
     var is_creator = false;
     var played_songs = Array();
+
+    // I added this, put it where you want it -B
+    // resize the thumb/record-disc to be square
+    function resizeThumb() {
+        console.log("test");
+        document.getElementById('thumb').style.height = document.getElementById('thumb').width + '';
+    }
+    window.onresize = resizeThumb;
+    document.getElementById('thumb').style.height=document.getElementById('thumb').width+'';
+
+    // update slider value text
+    document.getElementById('song_length').oninput=function(){
+        document.getElementById("time_value").innerText=document.getElementById('song_length').value;
+    };
+
     $("#song_info").hide();
     socket.on('connect', function() {
         console.log("connected");
