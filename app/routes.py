@@ -31,6 +31,10 @@ def index_err(error):
 def serve_file(path):
     return send_from_directory('resource', path)
 
+@app.route('/favicon.ico')
+def serve_favicon():
+    return send_from_directory('resource', 'favicon.ico')
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html')
