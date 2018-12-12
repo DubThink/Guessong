@@ -184,16 +184,10 @@ h4{
     width: 100%;
 }
 
-#song_artist{
+#song_artist, #song_name, #album{
     text-align:center;
-}
-
-#song_name{
-    text-align:center;
-}
-
-#album{
-    text-align:center;
+    font-size:25px;
+    text-transform: none;
 }
 
 /*input[type="text"]{*/

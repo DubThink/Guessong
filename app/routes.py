@@ -89,8 +89,9 @@ def chat_message(message):
     if gameobj.state == GameConstants.ROUND_LIVE or gameobj.state == GameConstants.ROUND_END:
         result = gameobj.check_guess(message["username"], message["message"])
         print(result)
+        game = backend.get_game(message["room"])
         if result == GameConstants.GUESS_CORRECT or result == GameConstants.GUESS_CLOSE:
-            emit('guess_result', {'result': result, 'username': message["username"]}, room=message["room"])
+            emit('guess_result', {'result': result, 'username': message["username"], 'song': game.get_song_info()}, room=message["room"])
         else:
             emit('chat_message', message, room=message["room"])
     else:

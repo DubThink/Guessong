@@ -77,7 +77,6 @@ $(document).ready(function() {
             played_songs[played_songs.length] = {name: msg["name"],
                 thumb: thumb_url,
                 link: msg["external_url"]};
-            console.log(played_songs);
             $('#thumb').attr("src", thumb_url);
             $('#thumb').show();
             update_song_list();
@@ -104,6 +103,11 @@ $(document).ready(function() {
             if (msg["result"] == "correct") {
                 $('#thumb').attr("src", thumb_url);
                 $('#thumb').show();
+                console.log("user guessed correctly!");
+                $("#song_info").show();
+                $("h3#song_name").text(msg["song"]["name"]);
+                $("h3#song_artist").text(msg["song"]["artist"]);
+                $("h3#album").text(msg["song"]["album"]);
             }
         }
         else{
