@@ -9,7 +9,7 @@
         <form class="pure-form" id="create_game"> <!-- section to create game -->
             <label class=" pure-input-1 centered" for="room_code"><b>ROOM CODE</b></label>
             <input class="dark-form dark-textarea pure-input-1 centered room_code" type="text"  placeholder="Readonly input here…" readonly>
-                <label class="pure-input-1" for="song_length">Time to guess: <value id="time_value">3</value> seconds </label>
+                <label class="pure-input-1" for="song_length">Time to guess: <var id="time_value">20</var> seconds </label>
                 <input class="dark-form pure-input-1 slider" type='range' min='10' max='30' id='song_length'>
                 <label class="pure-input-1" for="playlist">Playlist</label>
                 <select class="dark-form dark-textarea pure-input-1" id='playlist' style="height:  calc(3.0rem + 2px);"></select>
@@ -48,7 +48,7 @@
           </tbody>
         </table>
         </div>
-    <div class="col-md-4">
+    <div class="col-md-4" id="center_column">
         <img class="img-fluid record-disc spin stopspin" src="/resource/placeholder.png" id="thumb">
         <div id="song_info">
         <h3 id="song_name">September</h3>

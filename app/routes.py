@@ -109,7 +109,7 @@ def data_request(message):
     if game is None:
         emit("game_end", room=message["room"])
     elif game.state == GameConstants.ROUND_LIVE:
-        print(game.get_song_info())
+        # print(game.get_song_info())
         emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
     elif game.state == GameConstants.ROUND_END:
         emit("round_end", game.get_song_info(), room=message["room"])

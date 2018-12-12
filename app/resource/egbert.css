@@ -61,6 +61,7 @@ a:link {
 
 .record-disc{
     border-radius: 50%;
+    width: 100%;
 }
 
 .record-disc.spin{
@@ -80,10 +81,10 @@ a:link {
 }
 
 .record-disc.stopspin{
-    -webkit-transition: 2s;
-    -moz-transition: 2s;
-    -ms-transition: 2s;
-    transition: 2s;
+    -webkit-transition: .5s;
+    -moz-transition: .5s;
+    -ms-transition: .5s;
+    /*transition: .5s;*/
     border-radius: 0!important;
       -webkit-animation-name: none;
       -moz-animation-name: none;
@@ -116,7 +117,7 @@ nav{
     text-align: center;
     font-size: 100px;
     background-color: #444;
-    line-height: 40px;
+    line-height: 60px;
     margin: 0 auto;
 }
 
@@ -166,13 +167,24 @@ nav a{
     margin-left: auto;
     margin-right: auto;
 }
+.song_meta{
+        padding: 0;
+}
+h2.song_meta{
+    font-size: 1.5em;
+}
+h3.song_meta{
+    font-size: 1em;
+}
 
-h3{
+h3.front_page{
     text-transform: lowercase;
     font-family: Georgia, serif;
     font-size: 32px;
     text-align: center;
 }
+
+
 
 h4{
     text-align: center;
