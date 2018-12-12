@@ -99,7 +99,7 @@ $(document).ready(function() {
             $('#thumb').addClass("stopspin");
 
             $("#song_info").show();
-            $("h2#song_name").text(msg["name"]);
+            $("h3#song_name").text(msg["name"]);
             $("h3#song_artist").text(msg["artist"]);
             $("h3#album").text(msg["album"]);
         }
