@@ -58,10 +58,9 @@
     <div class="col-md-4" id="chat-col">
         <form class="pure-form" id="chat" action='#'>
             <fieldset class="pure-group">
-               <textarea class="dark-textarea dark-form pure-input-1" style="resize: none;" id="chat_output" rows="15" readonly></textarea>
+                <div class="dark-textarea dark-form pure-input-1" style="padding:5px;border:solid 1px;overflow: auto; height: 30em " id="chat_output"></div>
                 <input type="text" class="dark-form pure-input-1" autocomplete="off" id="chat_input" placeholder="Chat" required>
             </fieldset>
-{#              <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Chat/Guess" id="chat_submit">#}
                 <button class="dark-form pure-button pure-input-1 pure-button-primary" id="chat_submit">Chat</button>
         </form>
     </div>
