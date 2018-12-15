@@ -39,13 +39,14 @@ def serve_favicon():
 def not_found_error(error):
     return render_template('404.html')
 
-@app.route('/testspotify/<s>')
-def testspotify(s):
-    return testspotifyapi(s)
+@app.route('/apiform')
+def apiform():
+    return render_template('apiform.html')
 
-@app.route('/testbackend', methods=["GET", "POST"])
-def testbackend():
-    return render_template('testbackend.html', async_mode=socketio.async_mode)
+
+# @app.route('/testbackend', methods=["GET", "POST"])
+# def testbackend():
+#     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
 @app.route('/game/<create>:<string:name>:<string:room>', methods=["GET", "POST"])
 def game(create, name, room):
@@ -106,6 +107,13 @@ def chat_message(message):
 def start_game(message):
     backend.start_game(message["room"], message["username"], message["playlist"], message["song_length"])
     emit('game_started', room=message["room"])
+
+
+@socketio.on('game_end')
+def end_game(message):
+    game.end_game(message["room"])
+    emit('game_end', message, room=message["room"])
+
 
 @socketio.on('data_request')
 def data_request(message):

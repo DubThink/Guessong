@@ -17,8 +17,6 @@ $(document).ready(function() {
     var played_songs = Array();
     var textarea = document.getElementById('chat_output');
 
-    // I added this, put it where you want it -B
-    // resize the thumb/record-disc to be square
     function resizeThumb() {
         console.log("test");
         document.getElementById('thumb').style.height = document.getElementById('thumb').width + '';
@@ -26,7 +24,6 @@ $(document).ready(function() {
     window.onresize = resizeThumb;
     document.getElementById('thumb').style.height=document.getElementById('thumb').width+'';
 
-    // update slider value text
     document.getElementById('song_length').oninput=function(){
         document.getElementById("time_value").innerText=document.getElementById('song_length').value;
     };
@@ -55,7 +52,16 @@ $(document).ready(function() {
     });
 
     socket.on('chat_message', function(msg) {
-        $('#chat_output').append( msg["username"] + ":" + msg["message"] + "\n");
+        var x = 0;
+
+        for(let x in msg){
+            if(msg["message"][x] == '<' && msg["message"][x+2] == '>')
+                return false;
+            else if(msg["message"][x] == '<' && msg["message"][x+3] == '>')
+                return false;
+        }
+
+        $('#chat_output').append( msg["username"] + ": " + msg["message"] + "<br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('room_code', function(msg) {
@@ -99,7 +105,6 @@ $(document).ready(function() {
             $('#thumb').show();
             update_song_list();
             $('#thumb').addClass("stopspin");
-
             $("#song_info").show();
             $("h3#song_name").text(msg["name"]);
             $("h3#song_artist").text(msg["artist"]);
@@ -107,12 +112,19 @@ $(document).ready(function() {
         }
        round_over = true;
     });
+
     socket.on('game_end', function(msg) {
+        console.log("in game end function");
+        audio_player.pause();
+        $('#thumb').addClass("stopspin");
+        $(".table").hide();
         if (is_creator){
             $('#create_game').show();
         }
+        round_over = true;
         game_started = false;
     });
+
     socket.on('guess_result', function(msg){
         var who = ""
         console.log(msg);
@@ -130,7 +142,7 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-        $('#chat_output').append(who + " guess was " + msg["result"] + "!\n");
+        $('#chat_output').append('<i>'+who + " guess was " + msg["result"] + "!</i><br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){

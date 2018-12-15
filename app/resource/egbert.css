@@ -20,6 +20,18 @@ body {
 
 
 
+/*  ~~~~~~ SCROLLBAR ~~~~~~  */
+
+::-webkit-scrollbar{
+    width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#FF6854;
+}
+
+
+
 /*  ~~~~~~ FORMS & TABLES ~~~~~~  */
 
 .form-control,.form-control[readonly]{
@@ -30,8 +42,9 @@ body {
 
 .dark-textarea{
     background-color:#444!important;
-    color: #EEE!important;;
+    color: #EEE!important;
 }
+
 .dark-form,.dark-form[readonly]{
     background-color:#444;
     color: #EEE;
@@ -224,6 +237,14 @@ h3.front_page{
 .footer_class{
     text-align: center;
     alignment: bottom;
+}
+
+.footer_class a{
+    color: #0AB29A;
+}
+
+.footer_class a:hover{
+    color: #C0EDE6;
 }
 
 .logo_base{
