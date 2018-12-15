@@ -20,6 +20,18 @@ body {
 
 
 
+/*  ~~~~~~ SCROLLBAR ~~~~~~  */
+
+::-webkit-scrollbar{
+    width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#FF6854;
+}
+
+
+
 /*  ~~~~~~ FORMS & TABLES ~~~~~~  */
 
 .form-control,.form-control[readonly]{
@@ -32,6 +44,7 @@ body {
     background-color:#444!important;
     color: #EEE!important;;
 }
+
 .dark-form,.dark-form[readonly]{
     background-color:#444;
     color: #EEE;
