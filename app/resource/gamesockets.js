@@ -5,7 +5,7 @@ $(document).ready(function() {
     var room = "";
     var game_started = false;
     var round_over = false;
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+    var socket = io.connect('wss://' + document.domain + ':' + location.port + namespace);
     var thumb_url = "";
     var playlists;
     var audio_player = document.createElement("audio");
