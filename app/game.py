@@ -60,6 +60,7 @@ class Game:
         self.playlistData = None
         self.max_songs = 10
         self.guess_time=10
+        self.jumpToEnd=False
 
         # game state data
         self.startTime = 0
@@ -111,6 +112,8 @@ class Game:
         sim = similar(guess,self.currentSong.name)
         if sim > 0.95:
             self.gameUsers[username].add_score(self.guess_time-int(time.time() - self.startTime))
+            if all([a.hasGuessedCorrectly for a in self.gameUsers.values()]):
+                self.jumpToEnd=True
             return GameConstants.GUESS_CORRECT
         if sim > 0.80:
             return GameConstants.GUESS_CLOSE
@@ -214,7 +217,8 @@ class GameManager:
             threading.Timer(1, self._update_tick).start()
         print('ticking...')
         for roomcode, game in list(self.roomToGame.items()):
-            if game.state is GameConstants.ROUND_LIVE and time.time()-game.startTime > game.guess_time:
+            if (game.state is GameConstants.ROUND_LIVE and time.time()-game.startTime > game.guess_time) or game.jumpToEnd:
+                game.jumpToEnd=False
                 killgame = game.finish_round()
                 if killgame:
                     self.end_game(game.roomID)
