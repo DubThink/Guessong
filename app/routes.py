@@ -39,13 +39,14 @@ def serve_favicon():
 def not_found_error(error):
     return render_template('404.html')
 
-@app.route('/testspotify/<s>')
-def testspotify(s):
-    return testspotifyapi(s)
+@app.route('/apiform')
+def apiform():
+    return render_template('apiform.html')
 
-@app.route('/testbackend', methods=["GET", "POST"])
-def testbackend():
-    return render_template('testbackend.html', async_mode=socketio.async_mode)
+
+# @app.route('/testbackend', methods=["GET", "POST"])
+# def testbackend():
+#     return render_template('testbackend.html', async_mode=socketio.async_mode)
 
 @app.route('/game/<create>:<string:name>:<string:room>', methods=["GET", "POST"])
 def game(create, name, room):

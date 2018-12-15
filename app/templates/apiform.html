@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    Welcome to the backend!
+    <div>
+    <div class="row">
+{#            <input type="text" class="dark-form pure-input-1" name="auth" placeholder="Authentication token">#}
+        </div>
+        <div class="col-md-8">
+        <form class="pure-form" method="get"><fieldset class="pure-group">
+            <input type="text" class="dark-form pure-input-1" name="threadid" placeholder="Thread ID" required>
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Check Thread" formaction="/api/checkthread">
+        </fieldset></form>
+        </div>
+
+        <div class="col-md-8">
+        <form class="pure-form" method="get"><fieldset class="pure-group">
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Get Playlists" formaction="/api/playlists">
+        </fieldset></form>
+        </div>
+
+        <div class="col-md-8">
+        <form class="pure-form" method="get"><fieldset class="pure-group">
+            <input type="text" class="dark-form pure-input-1" name="spotifyid" placeholder="Spotify URI" required>
+            <input type="text" class="dark-form pure-input-1" name="name" placeholder="Public Playlist Name" required>
+            <input type="password" class="dark-form pure-input-1" name="auth" placeholder="Authentication token" REQUIRED>
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Add Playlist" formaction="/api/addplaylist">
+        </fieldset></form>
+        </div>
+
+        <div class="col-md-8">
+        <form class="pure-form" method="get"><fieldset class="pure-group">
+            <input type="hidden" value="load" name="command" />
+            <input type="text" class="dark-form pure-input-1" name="filename" placeholder="File Name (no extension)" required>
+            <input type="password" class="dark-form pure-input-1" name="auth" placeholder="Authentication token" required>
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Load Playlist" formaction="/api/managedb">
+        </fieldset></form>
+        </div>
+
+        <div class="col-md-8">
+        <form class="pure-form" method="get"><fieldset class="pure-group">
+            <input type="hidden" value="dump" name="command" />
+            <input type="text" class="dark-form pure-input-1" name="playlist" placeholder="Internal Playlist ID" required>
+            <input type="text" class="dark-form pure-input-1" name="filename" placeholder="File Name (no extension)" required>
+            <input type="password" class="dark-form pure-input-1" name="auth" placeholder="Authentication token" required>
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Dump Playlist" formaction="/api/managedb">
+        </fieldset></form>
+        </div>
+
+        <div class="col-md-8">
+        <form class="pure-form" method="get"><fieldset class="pure-group">
+            <input type="password" class="dark-form pure-input-1" name="auth" placeholder="Authentication token" REQUIRED>
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" type="submit" value="Show Reset Button" formaction="javascript:document.getElementById('bigredbutton').hidden=false">
+            <input class="dark-form pure-button pure-input-1 pure-button-primary" style="background-color: #fe0;color:#f04" id="bigredbutton" type="submit" value="RESET DATABASE" formaction="/api/resetdb" hidden>
+        </fieldset></form>
+        </div>
+
+    </div>
+    </div>
+{% endblock %}
