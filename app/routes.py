@@ -107,6 +107,13 @@ def start_game(message):
     backend.start_game(message["room"], message["username"], message["playlist"], message["song_length"])
     emit('game_started', room=message["room"])
 
+
+@socketio.on('game_end')
+def end_game(message):
+    game.end_game(message["room"])
+    emit('game_end', message, room=message["room"])
+
+
 @socketio.on('data_request')
 def data_request(message):
     game = backend.get_game(message["room"])
