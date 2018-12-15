@@ -52,6 +52,15 @@ $(document).ready(function() {
     });
 
     socket.on('chat_message', function(msg) {
+        var x = 0;
+
+        for(let x in msg){
+            if(msg["message"][x] == '<' && msg["message"][x+2] == '>')
+                return false;
+            else if(msg["message"][x] == '<' && msg["message"][x+3] == '>')
+                return false;
+        }
+
         $('#chat_output').append( msg["username"] + ": " + msg["message"] + "<br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
@@ -133,7 +142,7 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-            $('#chat_output').append('<i>'+who + " guess was " + msg["result"] + "!</i><br>");
+        $('#chat_output').append('<i>'+who + " guess was " + msg["result"] + "!</i><br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){
