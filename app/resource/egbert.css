@@ -7,12 +7,20 @@ body {
     height: 100%;
 }
 
+
+
+/*  ~~~~~~ FOR MOBILE AND OTHER PLATFORMS ~~~~~~  */
+
 @media screen and (max-width: 900px){
     body{
         margin-left: 0px;
         margin-right: 0px;
     }
 }
+
+
+
+/*  ~~~~~~ FORMS & TABLES ~~~~~~  */
 
 .form-control,.form-control[readonly]{
     background-color:#444;
@@ -42,22 +50,30 @@ body {
     border-radius: 4px;
     /*box-shadow: none!important;*/
 }
+
+
+
+/*  ~~~~~~ BUTTONS ~~~~~~  */
+
 .btn-primary{
     background-color: #FF6854;
 }
+
 .btn-primary:hover{
     background-color: #B73d2d;
 }
+
 .pure-button-primary{
     background-color: #FF6854;
 }
+
 .pure-button-primary:hover{
     background-color: #B73d2d;
 }
 
-a:link {
-    text-decoration: none;
-}
+
+
+/*  ~~~~~~ RECORD PLAYER ~~~~~~  */
 
 .record-disc{
     border-radius: 50%;
@@ -96,14 +112,17 @@ a:link {
     from { -moz-transform: rotate(0deg); }
     to { -moz-transform: rotate(360deg); }
 }
+
 @-webkit-keyframes spin {
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }
 }
+
 @keyframes spin {
     from {transform:rotate(0deg);}
     to {transform:rotate(360deg);}
 }
+
 
 
 /*  ~~~~~~ NAVBAR ~~~~~~  */
@@ -131,6 +150,8 @@ nav a{
     padding: 10px;
 }
 
+
+
 /*  ~~~~~~ JOIN AND CREATE ROOM ~~~~~~  */
 
 .join_div{
@@ -141,12 +162,6 @@ nav a{
     text-align: center;
 }
 
-
-#page{
-    background-color: #C0EDE6;
-}
-
-
 #chat-div{
     text-align: right;
     float: right;
@@ -154,6 +169,10 @@ nav a{
     right: 100px;
     top: 100px;
 }
+
+
+
+/*  ~~~~~~ GAMEPLAY INFO & SETUP ~~~~~~  */
 
 #gameplay-div{
     text-align: left;
@@ -167,28 +186,28 @@ nav a{
     margin-left: auto;
     margin-right: auto;
 }
+
 .song_meta{
         padding: 0;
 }
+
 h2.song_meta{
     font-size: 1.5em;
 }
+
 h3.song_meta{
     font-size: 1em;
 }
+
+
+
+/*  ~~~~~~ OTHER ~~~~~~  */
 
 h3.front_page{
     text-transform: lowercase;
     font-family: Georgia, serif;
     font-size: 32px;
     text-align: center;
-}
-
-
-
-h4{
-    text-align: center;
-    font-size: 40px;
 }
 
 .centered{
@@ -201,18 +220,6 @@ h4{
     font-size:25px;
     text-transform: none;
 }
-
-/*input[type="text"]{*/
-    /*font-family: Georgia;*/
-    /*font-size: 20px;*/
-/*}*/
-
-/*input[type="submit"]{*/
-    /*font-family: Georgia;*/
-    /*font-size: 20px;*/
-    /*border-radius: 5px;*/
-/*}*/
-
 
 .footer_class{
     text-align: center;
@@ -231,54 +238,6 @@ h4{
     height: 60px;
     border: none !important;
 }
-/*
-input {
-    padding:3px;
-    border-radius: 6px;
-    border-style: none;
-}
-
-table {
-    text-align: left;
-    background-color: #333333;
-}
-td{
-    padding: 5px;
-}
-tr:nth-child(even) {
-    background-color: #444444
-}
-
-.roundbox{
-    background-color: #333333;
-}
-.navbar{
-    padding: 10px;
-    background-color: #EFEAE8;
-}
-
-a:link {
-    color: #403847;
-    text-decoration: none;
-}
-
-a:hover {
-    color: lightcyan;
-    text-decoration: underline;
-}
-
-a:visited {
-    color: mediumpurple;
-    text-decoration: none;
-}
-
-a:active {
-    color: lightcoral;
-    text-decoration: underline;
-}
-
-
-*/
 
 .alert, alert-danger{
     background-color: #FF6854;
@@ -287,4 +246,8 @@ a:active {
     margin-left: 100px;
     margin-right: 100px;
     text-align: center;
+}
+
+a:link {
+    text-decoration: none;
 }
