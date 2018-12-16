@@ -58,7 +58,7 @@ class Game:
         self.roomID = roomcode
         self.gameStarted = False
         self.playlistData = None
-        self.max_songs = 10
+        self.max_songs = 2
         self.guess_time=10
         self.jumpToEnd=False
 
@@ -163,6 +163,11 @@ class Game:
         print('finished round')
         return False
 
+    def reset_game(self):
+        for p in self.gameUsers.values():
+            p.score=0
+        self.playedSongs=[]
+        self.currentSong=None
 
 class GameManager:
     roomToGame = {}
@@ -189,6 +194,7 @@ class GameManager:
     def start_game(self, key):
         if key not in self.roomToGame:
             return False
+        self.roomToGame[key].reset_game()
         self.roomToGame[key].start_round()
         self.start_ticking()
         self.updateClients(key, self.roomToGame[key])

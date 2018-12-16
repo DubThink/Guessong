@@ -53,15 +53,7 @@ $(document).ready(function() {
 
     socket.on('chat_message', function(msg) {
         var x = 0;
-
-        for(let x in msg){
-            if(msg["message"][x] == '<' && msg["message"][x+2] == '>')
-                return false;
-            else if(msg["message"][x] == '<' && msg["message"][x+3] == '>')
-                return false;
-        }
-
-        $('#chat_output').append( msg["username"] + ": " + msg["message"] + "<br>");
+        $('#chat_output').append( "<p class='chatmsg'><b class='uname'>"+msg["username"] + "</b>: " + msg["message"] + "</p>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('room_code', function(msg) {
@@ -142,7 +134,7 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-        $('#chat_output').append('<i>'+who + " guess was " + msg["result"] + "!</i><br>");
+        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "!</i></p>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){

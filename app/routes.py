@@ -8,6 +8,7 @@ from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
 from app.playlistAPI import get_all_playlists_meta
 from .game import GameConstants
+import html
 
 import os
 from app.models import User
@@ -91,6 +92,7 @@ def join_lobby(message):
 @socketio.on('chat_message')
 def chat_message(message):
     gameobj = backend.get_game(message["room"])
+    message["message"]=html.escape(message["message"][:242])
     if gameobj.state == GameConstants.ROUND_LIVE or gameobj.state == GameConstants.ROUND_END:
         result = gameobj.check_guess(message["username"], message["message"])
         print(result)
