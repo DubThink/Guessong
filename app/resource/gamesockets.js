@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     var thumb_url = "";
     var playlists;
-    var round_length;
+    var round_length = 20;
     var audio_player = document.createElement("audio");
     audio_player.volume=0.10;
     audio_player.autoPlay=false;
@@ -76,6 +76,7 @@ $(document).ready(function() {
        $('#create_col').hide();
        $('#game_col').show();
        $('.table').show();
+       round_length = msg["round_length"];
        setInterval(request_game_data, 500);
     });
     socket.on('update_game', function(msg) {
@@ -85,16 +86,17 @@ $(document).ready(function() {
             audio_player.load();
             audio_player.play();
             round_over = false;
+            $('#game_col').show(); //So that score shows up when player joins mid game
+            round_length = msg["round_length"];//Same for round_length ... At this point update_game does everything that game_started does too but that's okay.
             $('#thumb').attr("src", "/resource/placeholder.png");
             $('#thumb').removeClass("stopspin");
             $("#song_info").hide();
             clearInterval(countdowner);
-            countdown=20;
-            document.getElementById("timer").innerHTML="20s";
+            countdown=round_length;
+            document.getElementById("timer").innerHTML= round_length + "s";
             document.getElementById("progress").innerHTML=msg["progress"];
             countdowner = setInterval(function() {
                 countdown--;
-                console.log(countdown);
                 document.getElementById("timer").innerHTML=countdown+"s";
                 if(countdown<=0)clearInterval(countdowner);
             }, 1000);
@@ -127,7 +129,8 @@ $(document).ready(function() {
         $('#thumb').addClass("stopspin");
         $(".table").hide();
         if (is_creator){
-            $('#create_game').show();
+            $('#create_col').show();
+            $('#game_col').hide();
         }
         round_over = true;
         game_started = false;
@@ -150,11 +153,9 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-<<<<<<< Updated upstream
+
         $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "! (+"+msg["score"]+"pts)</i></p>");
-=======
-        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "!</i></p>");
->>>>>>> Stashed changes
+
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){
