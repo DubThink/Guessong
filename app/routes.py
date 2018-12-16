@@ -110,7 +110,7 @@ def chat_message(message):
 @socketio.on('start_game')
 def start_game(message):
     backend.start_game(message["room"], message["username"], message["playlist"], message["song_length"])
-    emit('game_started', room=message["room"])
+    emit('game_started',{"round_length":backend.get_game(message["room"]).guess_time}, room=message["room"])
 
 
 @socketio.on('game_end')
@@ -126,7 +126,7 @@ def data_request(message):
         emit("game_end", room=message["room"])
     elif game.state == GameConstants.ROUND_LIVE:
         # print(game.get_song_info())
-        emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
+        emit("update_game", {'song':game.get_song_info(), 'progress':"%d/%d songs"%(len(game.playedSongs)+1,game.max_songs), 'users':game.get_players_data()}, room=message["room"])
     elif game.state == GameConstants.ROUND_END:
         emit("round_end", game.get_song_info(), room=message["room"])
     elif game.state == GameConstants.GAME_END:

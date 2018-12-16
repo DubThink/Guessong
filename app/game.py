@@ -115,7 +115,7 @@ class Game:
 
         sim = similar(guess,self.currentSong.name)
 
-        if sim > 0.80 and  self.gameUsers[username].hasGuessedCorrectly:
+        if sim > 0.80 and self.gameUsers[username].hasGuessedCorrectly:
             return GameConstants.GUESS_ALREADY,0
         if sim > 0.95:
             score=self.guess_time-int(time.time() - self.startTime)
