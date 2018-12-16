@@ -150,7 +150,11 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
+<<<<<<< Updated upstream
         $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "! (+"+msg["score"]+"pts)</i></p>");
+=======
+        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "!</i></p>");
+>>>>>>> Stashed changes
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){
@@ -181,7 +185,7 @@ $(document).ready(function() {
       $("button#chat_submit").trigger("click");
       return false;
     }
-  });
+    });
     function request_game_data(){
         socket.emit("data_request", {username: username, room: room});
     }
