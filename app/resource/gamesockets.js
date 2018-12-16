@@ -134,7 +134,7 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "!</i></p>");
+        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "! (+"+msg["score"]+"pts)</i></p>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){
