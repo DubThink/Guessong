@@ -9,6 +9,7 @@ $(document).ready(function() {
 
     var thumb_url = "";
     var playlists;
+    var round_length;
     var audio_player = document.createElement("audio");
     audio_player.volume=0.10;
     audio_player.autoPlay=false;
@@ -28,6 +29,9 @@ $(document).ready(function() {
     document.getElementById('song_length').oninput=function(){
         document.getElementById("time_value").innerText=document.getElementById('song_length').value;
     };
+
+    let countdown;
+    let countdowner;
 
     $("#song_info").hide();
     socket.on('connect', function() {
@@ -84,6 +88,16 @@ $(document).ready(function() {
             $('#thumb').attr("src", "/resource/placeholder.png");
             $('#thumb').removeClass("stopspin");
             $("#song_info").hide();
+            clearInterval(countdowner);
+            countdown=20;
+            document.getElementById("timer").innerHTML="20s";
+            document.getElementById("progress").innerHTML=msg["progress"];
+            countdowner = setInterval(function() {
+                countdown--;
+                console.log(countdown);
+                document.getElementById("timer").innerHTML=countdown+"s";
+                if(countdown<=0)clearInterval(countdowner);
+            }, 1000);
         }
         thumb_url = msg["song"]["thumbnail_url"];
         users=msg["users"];
@@ -136,7 +150,7 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-        $('#chat_output').append('<i>'+who + " guess was " + msg["result"] + "!</i><br>");
+        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "! (+"+msg["score"]+"pts)</i></p>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){

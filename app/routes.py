@@ -8,6 +8,7 @@ from app import app, db, socketio, backend
 from app.spotifyapi import testspotifyapi
 from app.playlistAPI import get_all_playlists_meta
 from .game import GameConstants
+import html
 
 import os
 from app.models import User
@@ -91,13 +92,16 @@ def join_lobby(message):
 @socketio.on('chat_message')
 def chat_message(message):
     gameobj = backend.get_game(message["room"])
+    message["message"]=html.escape(message["message"][:242])
     if gameobj.state == GameConstants.ROUND_LIVE or gameobj.state == GameConstants.ROUND_END:
-        result = gameobj.check_guess(message["username"], message["message"])
+        result,score = gameobj.check_guess(message["username"], message["message"])
         print(result)
         game = backend.get_game(message["room"])
         if result == GameConstants.GUESS_CORRECT or result == GameConstants.GUESS_CLOSE:
-            emit('guess_result', {'result': result, 'username': message["username"], 'song': game.get_song_info()}, room=message["room"])
+            emit('guess_result', {'result': result, 'score':score, 'username': message["username"], 'song': game.get_song_info()}, room=message["room"])
         else:
+            if result == GameConstants.GUESS_ALREADY:
+                message["message"]="***"
             emit('chat_message', message, room=message["room"])
     else:
         emit('chat_message', message, room=message["room"])
@@ -106,7 +110,7 @@ def chat_message(message):
 @socketio.on('start_game')
 def start_game(message):
     backend.start_game(message["room"], message["username"], message["playlist"], message["song_length"])
-    emit('game_started', room=message["room"])
+    emit('game_started',{"round_length":backend.get_game(message["room"]).guess_time}, room=message["room"])
 
 
 @socketio.on('game_end')
@@ -122,7 +126,7 @@ def data_request(message):
         emit("game_end", room=message["room"])
     elif game.state == GameConstants.ROUND_LIVE:
         # print(game.get_song_info())
-        emit("update_game", {'song':game.get_song_info(), 'users':game.get_players_data()}, room=message["room"])
+        emit("update_game", {'song':game.get_song_info(), 'progress':"%d/%d songs"%(len(game.playedSongs)+1,game.max_songs), 'users':game.get_players_data()}, room=message["room"])
     elif game.state == GameConstants.ROUND_END:
         emit("round_end", game.get_song_info(), room=message["room"])
     elif game.state == GameConstants.GAME_END:
