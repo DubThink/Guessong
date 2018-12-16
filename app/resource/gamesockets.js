@@ -53,16 +53,9 @@ $(document).ready(function() {
     });
 
     socket.on('chat_message', function(msg) {
-        var x = 0;
-
-        for(let x in msg){
-            if(msg["message"][x] == '<' && msg["message"][x+2] == '>')
-                return false;
-            else if(msg["message"][x] == '<' && msg["message"][x+3] == '>')
-                return false;
-        }
-
-        $('#chat_output').append( msg["username"] + ": " + msg["message"] + "<br>");
+        var chat = msg["message"];
+        chat = chat.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        $('#chat_output').append( msg["username"] + ": " + chat + "<br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('room_code', function(msg) {
