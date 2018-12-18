@@ -54,10 +54,19 @@ $(document).ready(function() {
             $('.table').hide();
         }
     });
+    var unloaded = false;
+    $(window).bind('beforeunload', function(){
+        if(!unloaded) {
+            socket.emit('user_disconnect', {name: username, room: room})
+            unloaded = true;
+        }
+    });
     socket.on('redirect', function(event){
         window.location.replace("/index/" + event["error_type"]);
     });
-
+    socket.on('disconnect_message', function(msg){
+        $('#chat_output').append( msg["name"] + " has left the room!👋<br>");
+    });
     socket.on('chat_message', function(msg) {
         var chat = msg["message"];
         chat = chat.replace(/</g, "&lt;").replace(/>/g, "&gt;");

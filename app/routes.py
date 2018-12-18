@@ -132,5 +132,10 @@ def data_request(message):
     elif game.state == GameConstants.GAME_END:
         emit("game_end", room=message["room"])
 
+@socketio.on('user_disconnect')
+def user_disconnect(message):
+    game = backend.get_game(message["room"])
+    game.remove_user(message['name'])
+    emit('disconnect_message', message, room=message['room'])
 
 
