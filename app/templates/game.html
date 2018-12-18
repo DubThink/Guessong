@@ -20,7 +20,7 @@
     </div>
 {#    GAMEPLAy LEFT    #}
         <div class="col-md-4" id="game_col">
-               <form class="pure-form" id="create_game"> <!-- section to create game -->
+            <form class="pure-form">
             <label class=" pure-input-1 centered" for="room_code"><b>ROOM CODE</b></label>
             <input class="dark-form dark-textarea pure-input-1 centered room_code" type="text" placeholder="Readonly input here…" readonly>
         </form>
@@ -52,16 +52,20 @@
         <div id="song_info">
         <h3 id="song_name">September</h3>
         <h3 id="song_artist">Earth, Wind and Fire</h3>
-        <h3 id="album">adfasdfasdfasdfasfdasdf</h3>
+        <h3 id="album">B)</h3>
         </div>
+        <p class="table-dark" style="margin-top:1em;text-align:left;">
+        <span style="padding-left: 5px;" id="timer">-</span>
+        <span style="padding-right: 5px;float:right;" id="progress">-</span>
+        </p>
     </div>
     <div class="col-md-4" id="chat-col">
         <form class="pure-form" id="chat" action='#'>
             <fieldset class="pure-group">
-                <div class="dark-textarea dark-form pure-input-1" style="padding:5px;border:solid 1px;overflow: auto; height: 30em " id="chat_output"></div>
-                <input type="text" class="dark-form pure-input-1" autocomplete="off" id="chat_input" placeholder="Chat" required>
+                <div class="dark-textarea dark-form pure-input-1" style="border-radius: 4px 4px 0 0;padding:5px;border:solid 1px;overflow: auto; height: 30em " id="chat_output"></div>
+                <input type="text" class="dark-form pure-input-1" autocomplete="off" id="chat_input" placeholder="Chat/Guess" required>
             </fieldset>
-                <button class="dark-form pure-button pure-input-1 pure-button-primary" id="chat_submit">Chat</button>
+                <button class="dark-form pure-button pure-input-1 pure-button-primary" id="chat_submit">Chat/Guess</button>
         </form>
     </div>
     </div>

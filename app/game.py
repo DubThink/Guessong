@@ -33,13 +33,16 @@ class GameUser:
     def add_score(self, score):
         if not self.hasGuessedCorrectly:
             self.score += score
-        self.hasGuessedCorrectly = True
+            self.hasGuessedCorrectly = True
+            return score
+        return 0
 
 
 class GameConstants:
     GUESS_INCORRECT = 'incorrect'
     GUESS_CLOSE = 'close'
     GUESS_CORRECT = 'correct'
+    GUESS_ALREADY = 'already'
 
     WAITING=0
     ROUND_LIVE=1
@@ -58,7 +61,7 @@ class Game:
         self.roomID = roomcode
         self.gameStarted = False
         self.playlistData = None
-        self.max_songs = 10
+        self.max_songs = 0
         self.guess_time=10
         self.jumpToEnd=False
 
@@ -104,20 +107,25 @@ class Game:
         """ Returns GUESS_CORRECT, GUESS_CLOSE, or GUESS_INCORRECT depending on the guess.
         Returns GUESS_INCORRECT if the specified user does not exist """
         if self.state!=GameConstants.ROUND_LIVE:
-            return GameConstants.GUESS_INCORRECT
+            return GameConstants.GUESS_INCORRECT,0
         if username not in self.gameUsers:
-            return GameConstants.GUESS_INCORRECT
+            return GameConstants.GUESS_INCORRECT,0
         if self.currentSong is None:
             return 0
+
         sim = similar(guess,self.currentSong.name)
+
+        if sim > 0.80 and self.gameUsers[username].hasGuessedCorrectly:
+            return GameConstants.GUESS_ALREADY,0
         if sim > 0.95:
-            self.gameUsers[username].add_score(self.guess_time-int(time.time() - self.startTime))
-            if all([a.hasGuessedCorrectly for a in self.gameUsers.values()]):
-                self.jumpToEnd=True
-            return GameConstants.GUESS_CORRECT
+            score=self.guess_time-int(time.time() - self.startTime)
+            score=self.gameUsers[username].add_score(score)
+            # if all([a.hasGuessedCorrectly for a in self.gameUsers.values()]):
+            #     self.jumpToEnd=True
+            return GameConstants.GUESS_CORRECT,score
         if sim > 0.80:
-            return GameConstants.GUESS_CLOSE
-        return GameConstants.GUESS_INCORRECT
+            return GameConstants.GUESS_CLOSE,0
+        return GameConstants.GUESS_INCORRECT,0
 
     def get_song_info(self):
         """ Gets current song object as a dict/json """
@@ -163,6 +171,11 @@ class Game:
         print('finished round')
         return False
 
+    def reset_game(self):
+        for p in self.gameUsers.values():
+            p.score=0
+        self.playedSongs=[]
+        self.currentSong=None
 
 class GameManager:
     roomToGame = {}
@@ -187,14 +200,26 @@ class GameManager:
         return game
         
     def start_game(self, key):
+        print("starting game")
         if key not in self.roomToGame:
             return False
+        self.roomToGame[key].reset_game()
         self.roomToGame[key].start_round()
         self.start_ticking()
         self.updateClients(key, self.roomToGame[key])
         return True
 
     def end_game(self, key):
+        print("ending game")
+        if key not in self.roomToGame:
+            return False
+        self.get_game(key).end_game()
+        if len(self.roomToGame) is 0:
+            self.stop_ticking()
+        return True
+
+    def kill_game(self, key):
+        print("killin game")
         if key not in self.roomToGame:
             return False
         self.get_game(key).end_game()

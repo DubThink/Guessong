@@ -8,6 +8,7 @@ $(document).ready(function() {
     var socket = io.connect('wss://' + document.domain + ':' + location.port + namespace);
     var thumb_url = "";
     var playlists;
+    var round_length = 20;
     var audio_player = document.createElement("audio");
     audio_player.volume=0.10;
     audio_player.autoPlay=false;
@@ -27,6 +28,9 @@ $(document).ready(function() {
     document.getElementById('song_length').oninput=function(){
         document.getElementById("time_value").innerText=document.getElementById('song_length').value;
     };
+
+    let countdown;
+    let countdowner;
 
     $("#song_info").hide();
     socket.on('connect', function() {
@@ -52,16 +56,9 @@ $(document).ready(function() {
     });
 
     socket.on('chat_message', function(msg) {
-        var x = 0;
-
-        for(let x in msg){
-            if(msg["message"][x] == '<' && msg["message"][x+2] == '>')
-                return false;
-            else if(msg["message"][x] == '<' && msg["message"][x+3] == '>')
-                return false;
-        }
-
-        $('#chat_output').append( msg["username"] + ": " + msg["message"] + "<br>");
+        var chat = msg["message"];
+        chat = chat.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        $('#chat_output').append( msg["username"] + ": " + chat + "<br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('room_code', function(msg) {
@@ -78,6 +75,7 @@ $(document).ready(function() {
        $('#create_col').hide();
        $('#game_col').show();
        $('.table').show();
+       round_length = msg["round_length"];
        setInterval(request_game_data, 500);
     });
     socket.on('update_game', function(msg) {
@@ -87,9 +85,20 @@ $(document).ready(function() {
             audio_player.load();
             audio_player.play();
             round_over = false;
+            $('#game_col').show(); //So that score shows up when player joins mid game
+            round_length = msg["round_length"];//Same for round_length ... At this point update_game does everything that game_started does too but that's okay.
             $('#thumb').attr("src", "/resource/placeholder.png");
             $('#thumb').removeClass("stopspin");
             $("#song_info").hide();
+            clearInterval(countdowner);
+            countdown=round_length;
+            document.getElementById("timer").innerHTML= round_length + "s";
+            document.getElementById("progress").innerHTML=msg["progress"];
+            countdowner = setInterval(function() {
+                countdown--;
+                document.getElementById("timer").innerHTML=countdown+"s";
+                if(countdown<=0)clearInterval(countdowner);
+            }, 1000);
         }
         thumb_url = msg["song"]["thumbnail_url"];
         users=msg["users"];
@@ -119,7 +128,8 @@ $(document).ready(function() {
         $('#thumb').addClass("stopspin");
         $(".table").hide();
         if (is_creator){
-            $('#create_game').show();
+            $('#create_col').show();
+            $('#game_col').hide();
         }
         round_over = true;
         game_started = false;
@@ -142,7 +152,9 @@ $(document).ready(function() {
         else{
             who = msg["username"] + "\'s";
         }
-        $('#chat_output').append('<i>'+who + " guess was " + msg["result"] + "!</i><br>");
+
+        $('#chat_output').append("<p class='chatmsg'><i>"+who + " guess was " + msg["result"] + "! (+"+msg["score"]+"pts)</i></p>");
+
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('playlists', function(msg){
@@ -173,7 +185,7 @@ $(document).ready(function() {
       $("button#chat_submit").trigger("click");
       return false;
     }
-  });
+    });
     function request_game_data(){
         socket.emit("data_request", {username: username, room: room});
     }
