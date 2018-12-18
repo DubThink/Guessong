@@ -61,7 +61,7 @@ class Game:
         self.roomID = roomcode
         self.gameStarted = False
         self.playlistData = None
-        self.max_songs = 0
+        self.max_songs = 10
         self.guess_time=10
         self.jumpToEnd=False
 
