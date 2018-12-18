@@ -79,7 +79,7 @@ $(document).ready(function() {
         room = msg["room"];
     });
     socket.on('join_message', function(msg) {
-        $('#chat_output').append("ATTENTION " + msg + "\n");
+        $('#chat_output').append("ATTENTION! " + msg + "<br>");
         textarea.scrollTop = textarea.scrollHeight;
     });
     socket.on('game_started', function(msg) {
