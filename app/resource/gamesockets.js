@@ -5,7 +5,10 @@ $(document).ready(function() {
     var room = "";
     var game_started = false;
     var round_over = false;
-    var socket = io.connect('wss://' + document.domain + ':' + location.port + namespace);
+    var socket_protocol = 'ws://';
+    if(location.protocol == 'https:')
+        socket_protocol = 'wss://';
+    var socket = io.connect(socket_protocol + document.domain + ':' + location.port + namespace);
     var thumb_url = "";
     var playlists;
     var round_length = 20;
